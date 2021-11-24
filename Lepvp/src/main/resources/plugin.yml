@@ -1,0 +1,40 @@
+name: Lepvp
+version: '1.17'
+main: me.maanraj514.Lepvp
+api-version: 1.17
+author: me.Maanraj514
+softdepend: [SlimeWorldManager]
+commands:
+  setLobby:
+    usage: /<command>
+  arena:
+    usage: /<command>
+    aliases:
+      - a
+  duels:
+    usage: /<command>
+  join:
+    usage: /<command>
+    aliases:
+      - j
+  quit:
+    usage: /<command>
+    aliases:
+      - q
+  reset:
+    usage: /<command>
+  unload:
+    usage: /<command>
+  slimeCommandLoad:
+    usage: /<command>
+  slimeCommandUnload:
+    usage: /<command>
+  goIn:
+    usage: /<command>
+  test:
+    usage: /<command>
+permissions:
+  lepvp.admin:
+    description: The admin permission for the plugin.
+  lobby:
+    description: The people who are in the lobby.
