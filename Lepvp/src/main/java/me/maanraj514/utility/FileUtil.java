@@ -1,10 +1,12 @@
 package me.maanraj514.utility;
 
+import lombok.experimental.UtilityClass;
 
 import java.io.*;
 
+@UtilityClass
 public final class FileUtil {
-    public static void copy(File source, File destination) throws IOException {
+    public void copy(File source, File destination) throws IOException {
         if (source.isDirectory()) {
             if (!destination.exists()) {
                 destination.mkdir();
@@ -32,7 +34,7 @@ public final class FileUtil {
         }
     }
 
-    public static void delete(File file) {
+    public void delete(File file) {
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             if (files == null) return;

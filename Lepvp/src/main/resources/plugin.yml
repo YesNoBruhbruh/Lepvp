@@ -1,9 +1,8 @@
 name: Lepvp
-version: '1.17'
+version: '1.18'
 main: me.maanraj514.Lepvp
-api-version: 1.17
+api-version: 1.18
 author: me.Maanraj514
-softdepend: [SlimeWorldManager]
 commands:
   setLobby:
     usage: /<command>
@@ -23,18 +22,10 @@ commands:
       - q
   reset:
     usage: /<command>
-  unload:
+  randomJoin:
     usage: /<command>
-  slimeCommandLoad:
-    usage: /<command>
-  slimeCommandUnload:
-    usage: /<command>
-  goIn:
-    usage: /<command>
-  test:
-    usage: /<command>
+    aliases:
+      - rj
 permissions:
   lepvp.admin:
     description: The admin permission for the plugin.
-  lobby:
-    description: The people who are in the lobby.

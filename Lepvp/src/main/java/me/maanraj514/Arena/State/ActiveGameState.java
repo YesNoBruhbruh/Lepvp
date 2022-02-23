@@ -1,17 +1,10 @@
 package me.maanraj514.Arena.State;
 
-import com.grinderwolf.swm.api.SlimePlugin;
-import com.grinderwolf.swm.api.exceptions.CorruptedWorldException;
-import com.grinderwolf.swm.api.exceptions.NewerFormatException;
-import com.grinderwolf.swm.api.exceptions.UnknownWorldException;
-import com.grinderwolf.swm.api.exceptions.WorldInUseException;
-import com.grinderwolf.swm.api.loaders.SlimeLoader;
-import com.grinderwolf.swm.api.world.SlimeWorld;
-import com.grinderwolf.swm.api.world.properties.SlimePropertyMap;
 import lombok.Getter;
 import me.maanraj514.Arena.ItemStacks.*;
 import me.maanraj514.Lepvp;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -32,8 +25,6 @@ public class ActiveGameState extends ArenaState {
     @Getter
     private List<UUID> alivePlayers;
     private Lepvp plugin;
-    SlimePlugin slime = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
-    SlimePropertyMap properties = new SlimePropertyMap();
     private boolean isOver = false;
 
     @Override
@@ -139,33 +130,6 @@ public class ActiveGameState extends ArenaState {
                 Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "the arena thing in player thing has unload thing");
             }, 20 * 10);
 
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                Bukkit.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-
-                    try {
-                        // ATTEMPT TO LOAD WORLD
-                        long start = System.currentTimeMillis();
-                        SlimeLoader file = slime.getLoader("file");
-
-                        if (file == null) {
-                            Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.RED + "That loader is null");
-                        }
-
-                        SlimeWorld slimeWorld = slime.loadWorld(file, worldName, true, properties);
-                        plugin.getServer().getScheduler().runTask(plugin, () -> {
-                            try {
-                                slime.generateWorld(slimeWorld);
-                            } catch (IllegalArgumentException ex) {
-                                Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.RED + "something illegal happened");
-                            }
-                        });
-                    } catch (UnknownWorldException | IOException | CorruptedWorldException | NewerFormatException | WorldInUseException ex) {
-                        plugin.getServer().getConsoleSender().sendMessage(ex.getMessage());
-                        ex.printStackTrace();
-                    }
-                });
-            }, 20 * 15);
-
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> getArena().setState(new WaitingArenaState(), plugin), 20 * 5);
         }, 0, 4);
     }
@@ -185,7 +149,7 @@ public class ActiveGameState extends ArenaState {
 
         if (player.getHealth() - event.getFinalDamage() <= 0 && !(player.getInventory().getItemInOffHand().getType() == Material.TOTEM_OF_UNDYING || player.getInventory().getItemInMainHand().getType() == Material.TOTEM_OF_UNDYING)) {
             alivePlayers.remove(player.getUniqueId());
-            player.setHealth(player.getMaxHealth());
+            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
             player.setGameMode(GameMode.SPECTATOR);
             getArena().sendMessage("&a" + player.getDisplayName() + " died!");
         }

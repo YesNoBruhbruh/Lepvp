@@ -1,9 +1,9 @@
 package me.maanraj514.Arena;
 
 import lombok.RequiredArgsConstructor;
+import me.maanraj514.Lepvp;
 import me.maanraj514.utility.Colorize;
 import me.maanraj514.utility.ItemBuilder;
-import me.maanraj514.utility.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -18,6 +18,7 @@ import java.util.*;
 public class ArenaSetupManager implements Listener {
 
     private final ArenaManager arenaManager;
+    private final Lepvp plugin;
     private final Map<UUID, TemporaryArena> playerToTempArenaMap = new HashMap<>();
 
     private final String SET_LOCATION_ONE_ITEM_NAME = "Set Location One";
@@ -34,27 +35,27 @@ public class ArenaSetupManager implements Listener {
         player.setGameMode(GameMode.CREATIVE);
 
         playerToTempArenaMap.put(player.getUniqueId(), temporaryArena);
-        Colorize.sendMessage(player, Message.MOVE_SETUP_MODE + temporaryArena.getDisplayName());
+        Colorize.sendMessage(player, "&aMoved to setup mode for " + temporaryArena.getDisplayName());
 
         player.getInventory().addItem(
                 new ItemBuilder(Material.STICK)
                         .setName(ChatColor.GREEN + SET_LOCATION_ONE_ITEM_NAME + ChatColor.GRAY + RIGHT_CLICK)
-                        .toItemStack()
+                        .build()
         );
         player.getInventory().addItem(
                 new ItemBuilder(Material.BLAZE_ROD)
                         .setName(ChatColor.GREEN + SET_LOCATION_TWO_ITEM_NAME + ChatColor.GRAY + RIGHT_CLICK)
-                        .toItemStack()
+                        .build()
         );
         player.getInventory().addItem(
                 new ItemBuilder(Material.DIAMOND)
                         .setName(ChatColor.GREEN + SAVE_ITEM_NAME + ChatColor.GRAY + RIGHT_CLICK)
-                        .toItemStack()
+                        .build()
         );
         player.getInventory().addItem(
                 new ItemBuilder(Material.BARRIER)
                         .setName(ChatColor.GREEN + CANCEL_ITEM_NAME + ChatColor.GRAY + RIGHT_CLICK)
-                        .toItemStack()
+                        .build()
         );
     }
 
@@ -63,7 +64,7 @@ public class ArenaSetupManager implements Listener {
 
         player.getInventory().clear();
         playerToTempArenaMap.remove(player.getUniqueId());
-        arenaManager.getRollBackManager().restore(player, null);
+        arenaManager.getRollBackManager().restore(player, plugin);
     }
 
     public boolean inSetupMode(Player player) {

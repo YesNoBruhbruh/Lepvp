@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import me.maanraj514.Arena.Arena;
 import me.maanraj514.Lepvp;
 import me.maanraj514.utility.Colorize;
-import me.maanraj514.utility.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,21 +20,22 @@ public class DuelCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            Colorize.sendMessage(sender, Message.MUST_BE_PLAYER_ERROR);
+            Colorize.sendMessage(sender, "&cyou must be player to use this command");
             return true;
         }
         Player player = (Player) sender;
 
         if (args.length == 0) {
             Colorize.sendMessage(player, "&cCant be empty bozo");
+            Colorize.sendMessage(player, "&c/duels { randomJoin/rj | quit/q | join/j <arenaName> }");
             return true;
         }
 
-        String args1 = args[0];
+        String args0 = args[0];
 
-        switch (args1) {
-            case "join":
-            case "j":
+        switch (args0) {
+            case "randomJoin":
+            case "rj":
                 Optional<Arena> optionalArenaFind = plugin.getArenaManager().findOpenArena();
                 if (!optionalArenaFind.isPresent()) {
                     Colorize.sendMessage(player, "&cThat arena doesn't exist or there isn't a available arena");
@@ -64,7 +64,7 @@ public class DuelCommand implements CommandExecutor {
         }
 
         if (args.length > 1) {
-            if (args[0].equalsIgnoreCase("goIn")) {
+            if (args[0].equalsIgnoreCase("join") || args[0].equalsIgnoreCase("j")) {
                 String arenaName = arena.arenaNameFromArgs(args);
                 Optional<Arena> optionalArenaFindOpen = plugin.getArenaManager().findOpenArenaSpecific(arenaName);
                 if (!optionalArenaFindOpen.isPresent()) {

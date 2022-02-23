@@ -8,8 +8,8 @@ import java.io.File;
 
 public class ConfigurationFile {
 
-    private File file;
-    private YamlConfiguration configuration;
+    private final File file;
+    private final YamlConfiguration configuration;
 
     /**
     * @param plugin The class of the owner of the file

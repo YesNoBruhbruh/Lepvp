@@ -30,12 +30,14 @@ public class ResetWorld implements CommandExecutor {
                 map.load();
                 System.out.println(map.getWorld());
 
-                Location loc = new Location(Bukkit.getWorld("worl"), 1, 1, 1);
-                player.teleport(loc);
+                Location loc = new Location(Bukkit.getWorld("world"), 1, 1, 1);
+                if (!player.getWorld().getName().equalsIgnoreCase("world")){
+                    player.teleport(loc);
+                }
                 Colorize.sendMessage(player, "&cThe world is resetting...");
                 CoolDown.setCoolDown(player, 3);
             }
-            Colorize.sendMessage(player, "&cYou can use that command again in 3 seconds!");
+            Colorize.sendMessage(player, "&cYou can use that command again in " + CoolDown.timeLeft(player) + " &cseconds!");
             return true;
         }
         return true;

@@ -60,7 +60,7 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemStack toItemStack(){
+    public ItemStack build(){
         return is;
     }
 }

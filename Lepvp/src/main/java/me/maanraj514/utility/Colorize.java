@@ -1,19 +1,21 @@
 package me.maanraj514.utility;
 
+import lombok.experimental.UtilityClass;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+@UtilityClass
 public class Colorize {
 
-    public static String format(String str){
+    public String format(String str){
         return ChatColor.translateAlternateColorCodes('&', str);
     }
 
-    public static String stripColor(String str){
+    public String stripColor(String str){
         return ChatColor.stripColor(str);
     }
 
-    public static void sendMessage(CommandSender sender, String message){
+    public void sendMessage(CommandSender sender, String message){
         sender.sendMessage(format(message));
     }
 }

@@ -10,7 +10,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class CommonStateListener implements Listener {
@@ -30,7 +29,7 @@ public class CommonStateListener implements Listener {
         if(!arena.isPlayer(event.getPlayer())) return;
         if (!p.hasPermission("lepvp.admin")) {
 
-            if (arena.getArenaState() instanceof WaitingArenaState && arena.getArenaState() instanceof  StartingArenaState) {
+            if (arena.getArenaState() instanceof WaitingArenaState || arena.getArenaState() instanceof  StartingArenaState) {
                 event.setCancelled(true);
             }
         }
@@ -42,7 +41,7 @@ public class CommonStateListener implements Listener {
         if(!arena.isPlayer(event.getPlayer())) return;
         if (!p.hasPermission("lepvp.admin")) {
 
-            if (arena.getArenaState() instanceof WaitingArenaState && arena.getArenaState() instanceof  StartingArenaState) {
+            if (arena.getArenaState() instanceof WaitingArenaState || arena.getArenaState() instanceof  StartingArenaState) {
                 event.setCancelled(true);
             }
         }
@@ -80,20 +79,8 @@ public class CommonStateListener implements Listener {
         Player player = (Player) event.getEntity();
 
         if (!arena.isPlayer(player)) return;
-        event.setCancelled(!(arena.getArenaState() instanceof ActiveGameState));
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    private void onDeath(PlayerDeathEvent event) {
-        Player player = event.getEntity();
-        if(!arena.isPlayer(player)) return;
-
-        arena.removePlayer(player, plugin);
-
-        player.getInventory().clear();
-        player.getActivePotionEffects().clear();
-
-        player.setLevel(0);
-        player.setExp(0);
+        if (!(arena.getArenaState() instanceof ActiveGameState)){
+            event.setFoodLevel(20);
+        }
     }
 }

@@ -1,6 +1,8 @@
 package me.maanraj514.commands;
 
 import me.maanraj514.Lepvp;
+import me.maanraj514.utility.Colorize;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,14 +17,15 @@ public class SetLobbyCommand implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) return true;
-
+        if (!(sender instanceof Player)){
+            return true;
+        }
         Player p = (Player) sender;
-
+        if (!p.hasPermission("lepvp.admin")){
+            Bukkit.getLogger().info(Colorize.format("&cYou don't have the permission to use this command!"));
+            return true;
+        }
         if (command.getName().equalsIgnoreCase("setLobby")) {
-            if (!p.isOp()) {
-                return true;
-            }
             if (plugin.getConfig().get("player-location") != null) {
                 return true;
             } else {

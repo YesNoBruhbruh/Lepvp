@@ -30,7 +30,7 @@ public class PlayerRollBackManager {
         player.getInventory().clear();
     }
 
-    public void restore(Player player, JavaPlugin plugin) {
+    public void restore(Player player, Lepvp plugin) {
         player.getInventory().clear();
 
         ItemStack[] inventoryContent = previousInventoryContents.get(player.getUniqueId());
@@ -49,8 +49,12 @@ public class PlayerRollBackManager {
         }
 
         Location previousLocation = previousLocationMap.get(player.getUniqueId());
-        if (previousLocation != null) {
-            player.teleport(previousLocation);
+        if (plugin.getConfig().get("player-location") != null){
+            player.teleport((Location) plugin.getConfig().get("player-location"));
+        }else{
+            if (previousLocation != null) {
+                player.teleport(previousLocation);
+            }
         }
         player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
 

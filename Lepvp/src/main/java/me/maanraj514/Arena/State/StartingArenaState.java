@@ -3,7 +3,7 @@ package me.maanraj514.Arena.State;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.maanraj514.Lepvp;
-import me.maanraj514.tasks.StartCountdownTask;
+import me.maanraj514.Arena.tasks.StartCountdownTask;
 
 @RequiredArgsConstructor
 public class StartingArenaState extends ArenaState {

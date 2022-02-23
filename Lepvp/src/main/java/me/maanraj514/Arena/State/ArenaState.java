@@ -2,6 +2,7 @@ package me.maanraj514.Arena.State;
 
 import me.maanraj514.Arena.Arena;
 import me.maanraj514.Lepvp;
+import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
@@ -14,6 +15,7 @@ public abstract class ArenaState implements Listener {
     }
 
     public void onDisable(){
+        Bukkit.getLogger().info("Unregistering...");
         HandlerList.unregisterAll(this);
     }
 

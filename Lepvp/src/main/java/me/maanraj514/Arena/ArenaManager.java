@@ -2,6 +2,7 @@ package me.maanraj514.Arena;
 
 import lombok.Getter;
 import me.maanraj514.Arena.State.WaitingArenaState;
+import me.maanraj514.Lepvp;
 import me.maanraj514.configuration.ConfigurationFile;
 import me.maanraj514.configuration.ConfigurationUtility;
 import me.maanraj514.PlayerRollBackManager;
@@ -9,7 +10,6 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class ArenaManager {
     @Getter
     private final PlayerRollBackManager rollBackManager;
 
-    public ArenaManager(JavaPlugin plugin) {
+    public ArenaManager(Lepvp plugin) {
         this.arenaConfigurationFile = new ConfigurationFile(plugin, "arenas");
 
         for(String arenaConfigName : this.arenaConfigurationFile.getConfiguration().getKeys(false)){
@@ -41,7 +41,7 @@ public class ArenaManager {
             this.arenaList.add(arena);
         }
 
-        this.arenaSetupManager = new ArenaSetupManager(this);
+        this.arenaSetupManager = new ArenaSetupManager(this, plugin);
         this.rollBackManager = new PlayerRollBackManager();
 
         plugin.getServer().getPluginManager().registerEvents(arenaSetupManager, plugin);
