@@ -42,19 +42,19 @@ public class ArenaCommand implements CommandExecutor {
                 Colorize.sendMessage(player, "&cArena name can't be empty");
                 return true;
             }
-            Optional<Arena> optionalArena = plugin.getArenaManager().findArena(arenaName);
-            TemporaryArena temporaryArena = optionalArena.map(TemporaryArena::new).orElseGet(() -> new TemporaryArena(arenaName));
+            Arena arena = plugin.getArenaManager().findSpecificArena(arenaName);
+            TemporaryArena temporaryArena = new TemporaryArena(arenaName);
 
             plugin.getArenaManager().getArenaSetupManager().addToSetup(player, temporaryArena);
         }else if (args[0].equalsIgnoreCase("delete")){
             String arenaName = arena.arenaNameFromArgs(args);
-            Optional<Arena> optionalArena = plugin.getArenaManager().findArena(arenaName);
-            if (!optionalArena.isPresent()) {
+            Arena arena = plugin.getArenaManager().findSpecificArena(arenaName);
+            if (arena == null) {
                 Colorize.sendMessage(player, "&cNo arena with that name exists");
                 return true;
             }
 
-            plugin.getArenaManager().deleteArena(optionalArena.get());
+            plugin.getArenaManager().deleteArena(arena);
             Colorize.sendMessage(player, "&cDeleted " + arenaName + ".");
         }else if (args[0].equalsIgnoreCase("list"))    {
             if(plugin.getArenaManager().getArenas().size() == 0) {
@@ -62,8 +62,9 @@ public class ArenaCommand implements CommandExecutor {
                 return true;
             }
 
-            plugin.getArenaManager().getArenas().forEach(arena -> Colorize.sendMessage(player, "&a" + arena.getDisplayName()));
-
+            for (Arena arena : plugin.getArenaManager().getArenas()){
+                Colorize.sendMessage(player, "&a" + arena.getDisplayName());
+            }
         }else{
             Colorize.sendMessage(sender, "&c/arena [setup|delete|list]");
         }

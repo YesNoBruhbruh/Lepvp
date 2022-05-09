@@ -10,10 +10,10 @@ import java.util.UUID;
 public class DuelTeam {
 
     @Getter
-    private List<UUID> playerList = new ArrayList<>();
+    private final List<UUID> playerList = new ArrayList<>();
 
     @Getter
-    private List<UUID> alivePlayers = new ArrayList<>();
+    private final List<UUID> alivePlayers = new ArrayList<>();
 
 
     public boolean isPlayer(Player player) {

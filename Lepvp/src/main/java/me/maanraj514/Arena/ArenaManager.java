@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class ArenaManager {
@@ -34,8 +35,8 @@ public class ArenaManager {
             ConfigurationSection section = this.arenaConfigurationFile.getConfiguration().getConfigurationSection(arenaConfigName);
 
             String displayName = section.getString("displayName");
-            Location spawnLocationOne = ConfigurationUtility.readLocation(section.getConfigurationSection("spawnLocationOne"));
-            Location spawnLocationTwo = ConfigurationUtility.readLocation(section.getConfigurationSection("spawnLocationTwo"));
+            Location spawnLocationOne = ConfigurationUtility.readLocation(Objects.requireNonNull(section.getConfigurationSection("spawnLocationOne")));
+            Location spawnLocationTwo = ConfigurationUtility.readLocation(Objects.requireNonNull(section.getConfigurationSection("spawnLocationTwo")));
 
             Arena arena = new Arena(arenaConfigName, displayName, spawnLocationOne, spawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
             this.arenaList.add(arena);
@@ -66,20 +67,40 @@ public class ArenaManager {
         return arenaList;
     }
 
-    public Optional<Arena> findArena(String displayName) {
-        return getArenas().stream().filter(arena -> arena.getDisplayName().equalsIgnoreCase(displayName)).findAny();
+    public Arena findSpecificArena(String specificArenaDisplayName) {
+        for (Arena arena : getArenas()) {
+            if (arena.getDisplayName().equalsIgnoreCase(specificArenaDisplayName)){
+                return arena;
+            }
+        }
+        return null;
     }
 
-    public Optional<Arena> findOpenArena() {
-        return getArenas().stream().filter(arena -> arena.getArenaState() instanceof WaitingArenaState).findAny();
+    public Arena findOpenArena() {
+        for (Arena arena : getArenas()) {
+            if (arena.getArenaState() instanceof WaitingArenaState){
+                return arena;
+            }
+        }
+        return null;
     }
 
-    public Optional<Arena> findOpenArenaSpecific(String arenaName) {
-        return getArenas().stream().filter(arena -> arena.getDisplayName().equalsIgnoreCase(arenaName) && arena.getArenaState() instanceof WaitingArenaState).findAny();
+    public Arena findSpecificOpenArena(String specificOpenArenaDisplayName) {
+        for (Arena arena : getArenas()) {
+            if (arena.getDisplayName().equalsIgnoreCase(specificOpenArenaDisplayName) && arena.getArenaState() instanceof WaitingArenaState){
+                return arena;
+            }
+        }
+        return null;
     }
 
-    public Optional<Arena> findPlayerName(Player player) {
-        return getArenas().stream().filter(arena -> arena.getPlayers().contains(player.getUniqueId())).findAny();
+    public Arena findPlayerName(Player player) {
+        for (Arena arena : getArenas()) {
+            if (arena.getPlayers().contains(player.getUniqueId())){
+                return arena;
+            }
+        }
+        return null;
     }
 
     public void deleteArena(Arena arena) {

@@ -4,39 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="53f337fd-b7b7-469f-ab8b-8b89b375c576" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_lang_commons_lang_2_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_md_5_bungeecord_chat_1_16_R0_4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_projectlombok_lombok_1_18_22.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/Lepvp.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/pom.xml" afterDir="false" />
+    <list default="true" id="53f337fd-b7b7-469f-ab8b-8b89b375c576" name="Changes" comment="Made major performance changes to arena manager and removed as much optionals as I can See and made some stuff to make code look cleaner">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_spigotmc_spigot_api_1_18_1_R0_1_SNAPSHOT.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_spigotmc_spigot_api_1_18_1_R0_1_SNAPSHOT.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ArenaManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ArenaManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ArenaSetupManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ArenaSetupManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ActiveGameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ActiveGameState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ArenaState.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ArenaState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/CommonStateListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/CommonStateListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/StartingArenaState.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/StartingArenaState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Lepvp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Lepvp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/PlayerRollBackManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/PlayerRollBackManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Slime/SlimeGameMap.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Slime/SlimeInterface.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/commands/ArenaCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/commands/ArenaCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/commands/CloneCommand.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/commands/DuelCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/commands/DuelCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/commands/ResetWorld.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/commands/ResetWorld.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/commands/SetLobbyCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/commands/SetLobbyCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/commands/SlimeCommand.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/commands/UnloadCommand.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/configuration/ConfigurationFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/configuration/ConfigurationFile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/lobby/LobbyListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/lobby/LobbyListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/tasks/StartCountdownTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/tasks/StartCountdownTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/utility/Colorize.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/utility/Colorize.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/utility/CoolDown.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/utility/CoolDown.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/utility/FileUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/utility/FileUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/utility/ItemBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/utility/ItemBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/utility/Message.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/duel/DuelManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/duel/DuelManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/duel/DuelTeam.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/duel/DuelTeam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/lobby/Lobby.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/lobby/LobbyListener.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,5 +75,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Made major performance changes to arena manager and removed as much optionals as I can See and made some stuff to make code look cleaner" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made major performance changes to arena manager and removed as much optionals as I can See and made some stuff to make code look cleaner" />
   </component>
 </project>

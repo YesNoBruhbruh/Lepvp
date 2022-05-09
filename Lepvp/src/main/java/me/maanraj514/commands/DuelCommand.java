@@ -36,29 +36,28 @@ public class DuelCommand implements CommandExecutor {
         switch (args0) {
             case "randomJoin":
             case "rj":
-                Optional<Arena> optionalArenaFind = plugin.getArenaManager().findOpenArena();
-                if (!optionalArenaFind.isPresent()) {
+                Arena availableArenas = plugin.getArenaManager().findOpenArena();
+                if (availableArenas == null) {
                     Colorize.sendMessage(player, "&cThat arena doesn't exist or there isn't a available arena");
                     return true;
                 }
 
-                if (plugin.getArenaManager().findPlayerName(player).isPresent()) {
+                if (plugin.getArenaManager().findPlayerName(player) != null) {
                     Colorize.sendMessage(player, "&cYou are already in that arena bozo");
                     return true;
                 }
 
-                optionalArenaFind.get().addPlayer(player, plugin);
+                availableArenas.addPlayer(player, plugin);
                 break;
             case "quit":
             case "q":
-                Optional<Arena> playerArena = plugin.getArenaManager().findPlayerName(player);
-                if (!playerArena.isPresent()) {
+                Arena playerArena = plugin.getArenaManager().findPlayerName(player);
+                if (playerArena == null) {
                     Colorize.sendMessage(player, "&cYou're not in an arena");
                     return true;
                 }
 
-                Arena arena = playerArena.get();
-                arena.removePlayer(player, plugin);
+                playerArena.removePlayer(player, plugin);
                 Colorize.sendMessage(player, "&cYou left the arena");
                 break;
         }
@@ -66,18 +65,18 @@ public class DuelCommand implements CommandExecutor {
         if (args.length > 1) {
             if (args[0].equalsIgnoreCase("join") || args[0].equalsIgnoreCase("j")) {
                 String arenaName = arena.arenaNameFromArgs(args);
-                Optional<Arena> optionalArenaFindOpen = plugin.getArenaManager().findOpenArenaSpecific(arenaName);
-                if (!optionalArenaFindOpen.isPresent()) {
-                    Colorize.sendMessage(player, "&cThat arena doesn't exist or if you got this error message then you should do /duels join <arenaname>");
+                Arena specificOpenArena = plugin.getArenaManager().findSpecificOpenArena(arenaName);
+                if (specificOpenArena == null) {
+                    Colorize.sendMessage(player, "&cThat arena doesn't exist or is not available");
                     return true;
                 }
 
-                if (plugin.getArenaManager().findPlayerName(player).isPresent()) {
+                if (plugin.getArenaManager().findPlayerName(player) != null) {
                     Colorize.sendMessage(player, "&cYou are already in that arena bozo");
                     return true;
                 }
 
-                optionalArenaFindOpen.get().addPlayer(player, plugin);
+                specificOpenArena.addPlayer(player, plugin);
             }
         }
         return true;

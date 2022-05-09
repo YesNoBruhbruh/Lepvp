@@ -6,7 +6,6 @@ import me.maanraj514.Arena.ArenaManager;
 import me.maanraj514.Arena.ItemStacks.*;
 import me.maanraj514.Arena.State.CommonStateListener;
 import me.maanraj514.commands.*;
-import me.maanraj514.lobby.LobbyListener;
 import me.maanraj514.map.LocalGameMap;
 import me.maanraj514.map.MapInterface;
 import me.maanraj514.utility.Colorize;
@@ -34,35 +33,17 @@ public final class Lepvp extends JavaPlugin {
     @Override
     public void onEnable() {
         super.onEnable();
-        getDataFolder().mkdirs();
 
-        File gameMapsFolder = new File(getDataFolder(), "gameMaps");
-        if (!gameMapsFolder.exists()) {
-            gameMapsFolder.mkdirs();
-        }
-        File mapToReset = new File(gameMapsFolder, "worl");
-        if (mapToReset.exists()){
-            Bukkit.getLogger().info(Colorize.format("&aWORLD < worl > is not null, creating duplicate... "));
-            map = new LocalGameMap(gameMapsFolder, "worl", true);
-        }
+        doMapStuff();
 
-        config.options().copyDefaults(true);
-        saveConfig();
+        config.options().copyDefaults();
+        saveDefaultConfig();
 
         CoolDown.setupCoolDown();
 
-        plugin = this;
-        arena = new Arena();
+        registerClasses();
 
-        this.arenaManager = new ArenaManager(this);
-
-        NetheriteBoots.init();
-        NetheriteLeggings.init();
-        NetheriteHelmet.init();
-        NetheriteChestplate.init();
-        NetheritePickaxe.init();
-        NetheriteSword.init();
-        Crossbowweapon.init();
+        initItems();
 
         registerCommands();
         registerListeners();
@@ -96,6 +77,36 @@ public final class Lepvp extends JavaPlugin {
     public void registerListeners() {
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new CommonStateListener(arena, plugin), this);
-        pm.registerEvents(new LobbyListener(arena, plugin), this);
+    }
+
+    public void doMapStuff() {
+        getDataFolder().mkdirs();
+
+        File gameMapsFolder = new File(getDataFolder(), "gameMaps");
+        if (!gameMapsFolder.exists()) {
+            gameMapsFolder.mkdirs();
+        }
+        File mapToReset = new File(gameMapsFolder, "worl");
+        if (mapToReset.exists()){
+            Bukkit.getLogger().info(Colorize.format("&aWORLD < worl > is not null, creating duplicate... "));
+            map = new LocalGameMap(gameMapsFolder, "worl", true);
+        }
+    }
+
+    public void registerClasses() {
+        plugin = this;
+        arena = new Arena();
+
+        this.arenaManager = new ArenaManager(this);
+    }
+
+    public void initItems() {
+        NetheriteBoots.init();
+        NetheriteLeggings.init();
+        NetheriteHelmet.init();
+        NetheriteChestplate.init();
+        NetheritePickaxe.init();
+        NetheriteSword.init();
+        Crossbowweapon.init();
     }
 }
