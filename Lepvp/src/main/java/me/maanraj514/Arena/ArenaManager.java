@@ -32,7 +32,7 @@ public class ArenaManager {
         this.arenaConfigurationFile = new ConfigurationFile(plugin, "arenas");
 
         for(String arenaConfigName : this.arenaConfigurationFile.getConfiguration().getKeys(false)){
-            ConfigurationSection section = this.arenaConfigurationFile.getConfiguration().getConfigurationSection(arenaConfigName);
+            ConfigurationSection section = this.arenaConfigurationFile.getConfiguration().getConfigurationSection("");
 
             String displayName = section.getString("displayName");
             Location spawnLocationOne = ConfigurationUtility.readLocation(Objects.requireNonNull(section.getConfigurationSection("spawnLocationOne")));
