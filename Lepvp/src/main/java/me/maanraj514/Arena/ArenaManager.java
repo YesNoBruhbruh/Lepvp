@@ -14,12 +14,11 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 public class ArenaManager {
 
     @Getter
-    public final List<Arena> arenaList = new ArrayList<>();
+    public final List<Arena> arenaList;
     private final ConfigurationFile arenaConfigurationFile;
 
     @Getter
@@ -29,6 +28,7 @@ public class ArenaManager {
     private final PlayerRollBackManager rollBackManager;
 
     public ArenaManager(Lepvp plugin) {
+        this.arenaList = new ArrayList<>();
         this.arenaConfigurationFile = new ConfigurationFile(plugin, "arenas");
 
         for(String arenaConfigName : this.arenaConfigurationFile.getConfiguration().getKeys(false)){
@@ -103,10 +103,14 @@ public class ArenaManager {
         return null;
     }
 
-    public void deleteArena(Arena arena) {
+    public void deleteArenaFromEverything(Arena arena) {
         this.arenaConfigurationFile.getConfiguration().set(arena.getConfigName(), null);
         this.arenaConfigurationFile.saveConfig();
 
+        this.arenaList.remove(arena);
+    }
+
+    public void deleteArenaItself(Arena arena) {
         this.arenaList.remove(arena);
     }
 }

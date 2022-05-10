@@ -15,7 +15,6 @@ public abstract class ArenaState implements Listener {
     }
 
     public void onDisable(){
-        Bukkit.getLogger().info("Unregistering...");
         HandlerList.unregisterAll(this);
     }
 

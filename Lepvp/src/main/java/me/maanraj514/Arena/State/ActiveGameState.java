@@ -15,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -122,13 +121,6 @@ public class ActiveGameState extends ArenaState {
             } else {
                 getArena().sendMessage("&cNo alive players? Game Over anyway");
             }
-
-            String worldName = getArena().getDisplayName();
-
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                Bukkit.unloadWorld(worldName, false);
-                Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "the arena thing in player thing has unload thing");
-            }, 20 * 10);
 
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> getArena().setState(new WaitingArenaState(), plugin), 20 * 5);
         }, 0, 4);

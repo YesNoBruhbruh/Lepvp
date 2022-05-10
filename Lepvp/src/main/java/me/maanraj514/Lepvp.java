@@ -5,6 +5,7 @@ import me.maanraj514.Arena.Arena;
 import me.maanraj514.Arena.ArenaManager;
 import me.maanraj514.Arena.ItemStacks.*;
 import me.maanraj514.Arena.State.CommonStateListener;
+import me.maanraj514.Arena.State.WaitingArenaState;
 import me.maanraj514.commands.*;
 import me.maanraj514.map.LocalGameMap;
 import me.maanraj514.map.MapInterface;
@@ -17,6 +18,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public final class Lepvp extends JavaPlugin {
@@ -30,11 +33,11 @@ public final class Lepvp extends JavaPlugin {
 
     FileConfiguration config = getConfig();
 
+    private Arena newArena;
+
     @Override
     public void onEnable() {
         super.onEnable();
-
-        doMapStuff();
 
         config.options().copyDefaults();
         saveDefaultConfig();
@@ -48,6 +51,8 @@ public final class Lepvp extends JavaPlugin {
         registerCommands();
         registerListeners();
 
+        doMapStuff();
+
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "-----------------------");
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "-----------------------");
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Plugin made by Maanraj514");
@@ -58,7 +63,12 @@ public final class Lepvp extends JavaPlugin {
     @Override
     public void onDisable() {
         super.onDisable();
-        if (map != null) map.unload();
+        if (map != null){
+            map.unload();
+            if (newArena != null) {
+                plugin.getArenaManager().deleteArenaItself(newArena);
+            }
+        }
 
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "-----------------------");
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "-----------------------");
@@ -86,17 +96,36 @@ public final class Lepvp extends JavaPlugin {
         if (!gameMapsFolder.exists()) {
             gameMapsFolder.mkdirs();
         }
-        File mapToReset = new File(gameMapsFolder, "worl");
-        if (mapToReset.exists()){
-            Bukkit.getLogger().info(Colorize.format("&aWORLD < worl > is not null, creating duplicate... "));
-            map = new LocalGameMap(gameMapsFolder, "worl", true);
+
+        List<Arena> toAdd = new ArrayList<>();
+
+        for (Arena a : plugin.getArenaManager().getArenas()) {
+            if (a.getDisplayName().equalsIgnoreCase("worl")){
+                File mapToReset = new File(gameMapsFolder, "worl");
+                if (mapToReset.exists()) {
+                    Bukkit.getLogger().info(Colorize.format("&aWORLD < worl > is not null, creating duplicate... "));
+                    map = new LocalGameMap(gameMapsFolder, a.getDisplayName(), true);
+
+                    newArena = new Arena(map.getWorld().getName(), map.getWorld().getName().toUpperCase(), a.getSpawnLocationOne(), a.getSpawnLocationTwo(), new WaitingArenaState(), new ArrayList<>());
+                    toAdd.add(newArena);
+                    Bukkit.getLogger().info(Colorize.format("&aEVERYTHING LOADED IN PROPERLY (THE MAPS)"));
+                }else{
+                    Bukkit.getLogger().info(Colorize.format("&cWORLD < worl > is null, cancel creating duplicate..."));
+                }
+            }else{
+                Bukkit.getLogger().info(Colorize.format("&cThere is no arena with the worl displayname"));
+            }
+        }
+
+        for (Arena a1 : toAdd){
+            plugin.getArenaManager().getArenas().add(a1);
+            Bukkit.getLogger().info(Colorize.format("&aEVERYTHING ADDED IN PROPERLY (THE MAPS)"));
         }
     }
 
     public void registerClasses() {
         plugin = this;
         arena = new Arena();
-
         this.arenaManager = new ArenaManager(this);
     }
 

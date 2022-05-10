@@ -10,8 +10,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Optional;
-
 @AllArgsConstructor
 public class ArenaCommand implements CommandExecutor {
 
@@ -54,7 +52,7 @@ public class ArenaCommand implements CommandExecutor {
                 return true;
             }
 
-            plugin.getArenaManager().deleteArena(arena);
+            plugin.getArenaManager().deleteArenaFromEverything(arena);
             Colorize.sendMessage(player, "&cDeleted " + arenaName + ".");
         }else if (args[0].equalsIgnoreCase("list"))    {
             if(plugin.getArenaManager().getArenas().size() == 0) {
