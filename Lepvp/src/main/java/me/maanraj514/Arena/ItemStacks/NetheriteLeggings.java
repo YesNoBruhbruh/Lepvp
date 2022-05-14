@@ -24,7 +24,7 @@ public class NetheriteLeggings {
         List<String> lore = new ArrayList<>();
         lore.add("it's just a leggings >:)");
         meta.addEnchant(Enchantment.MENDING, 1, true);
-        meta.addEnchant(Enchantment.PROTECTION_EXPLOSIONS, 4, true);
+        meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4, true);
         meta.addEnchant(Enchantment.DURABILITY, 3, true);
         meta.setLore(lore);
         item.setItemMeta(meta);

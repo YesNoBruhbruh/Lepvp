@@ -4,13 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="53f337fd-b7b7-469f-ab8b-8b89b375c576" name="Changes" comment="Made major performance changes to arena manager and removed as much optionals as I can See and made some stuff to make code look cleaner">
+    <list default="true" id="53f337fd-b7b7-469f-ab8b-8b89b375c576" name="Changes" comment="first test of a map reset system and it works! after many months of trying I finally figured it out! get ready for a major update to the lepvp plugin!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ArenaManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ArenaManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ActiveGameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ActiveGameState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ArenaState.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ArenaState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ItemStacks/NetheriteLeggings.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ItemStacks/NetheriteLeggings.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Lepvp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Lepvp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/commands/ArenaCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/commands/ArenaCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/commands/DuelCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/commands/DuelCommand.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +40,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="MTConfigurable" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -76,7 +77,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652103628000</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="first test of a map reset system and it works! after many months of trying I finally figured it out! get ready for a major update to the lepvp plugin!">
+      <created>1652171235023</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1652171235023</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -95,6 +103,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Made major performance changes to arena manager and removed as much optionals as I can See and made some stuff to make code look cleaner" />
-    <option name="LAST_COMMIT_MESSAGE" value="Made major performance changes to arena manager and removed as much optionals as I can See and made some stuff to make code look cleaner" />
+    <MESSAGE value="first test of a map reset system and it works! after many months of trying I finally figured it out! get ready for a major update to the lepvp plugin!" />
+    <option name="LAST_COMMIT_MESSAGE" value="first test of a map reset system and it works! after many months of trying I finally figured it out! get ready for a major update to the lepvp plugin!" />
   </component>
 </project>

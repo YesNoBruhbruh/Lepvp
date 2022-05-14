@@ -9,8 +9,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Optional;
-
 @AllArgsConstructor
 public class DuelCommand implements CommandExecutor {
 
@@ -36,7 +34,7 @@ public class DuelCommand implements CommandExecutor {
         switch (args0) {
             case "randomJoin":
             case "rj":
-                Arena availableArenas = plugin.getArenaManager().findOpenArena();
+                Arena availableArenas = plugin.getArenaManager().findOpenDupArena();
                 if (availableArenas == null) {
                     Colorize.sendMessage(player, "&cThat arena doesn't exist or there isn't a available arena");
                     return true;
@@ -65,7 +63,7 @@ public class DuelCommand implements CommandExecutor {
         if (args.length > 1) {
             if (args[0].equalsIgnoreCase("join") || args[0].equalsIgnoreCase("j")) {
                 String arenaName = arena.arenaNameFromArgs(args);
-                Arena specificOpenArena = plugin.getArenaManager().findSpecificOpenArena(arenaName);
+                Arena specificOpenArena = plugin.getArenaManager().findSpecificOpenDupArena(arenaName);
                 if (specificOpenArena == null) {
                     Colorize.sendMessage(player, "&cThat arena doesn't exist or is not available");
                     return true;

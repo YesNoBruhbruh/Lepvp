@@ -17,8 +17,9 @@ import java.util.Objects;
 
 public class ArenaManager {
 
-    @Getter
-    public final List<Arena> arenaList;
+    private final List<Arena> dupArenaList;
+    private final List<Arena> sourceArenaList;
+
     private final ConfigurationFile arenaConfigurationFile;
 
     @Getter
@@ -28,7 +29,8 @@ public class ArenaManager {
     private final PlayerRollBackManager rollBackManager;
 
     public ArenaManager(Lepvp plugin) {
-        this.arenaList = new ArrayList<>();
+        this.dupArenaList = new ArrayList<>();
+        this.sourceArenaList = new ArrayList<>();
         this.arenaConfigurationFile = new ConfigurationFile(plugin, "arenas");
 
         for(String arenaConfigName : this.arenaConfigurationFile.getConfiguration().getKeys(false)){
@@ -39,7 +41,7 @@ public class ArenaManager {
             Location spawnLocationTwo = ConfigurationUtility.readLocation(Objects.requireNonNull(section.getConfigurationSection("spawnLocationTwo")));
 
             Arena arena = new Arena(arenaConfigName, displayName, spawnLocationOne, spawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
-            this.arenaList.add(arena);
+            this.sourceArenaList.add(arena);
         }
 
         this.arenaSetupManager = new ArenaSetupManager(this, plugin);
@@ -49,8 +51,8 @@ public class ArenaManager {
     }
 
     public void saveArenaToConfig(Arena arena){
-        this.arenaList.removeIf(existing -> existing.getConfigName().equalsIgnoreCase(arena.getDisplayName()));
-        this.arenaList.add(arena);
+        this.sourceArenaList.removeIf(existing -> existing.getConfigName().equalsIgnoreCase(arena.getDisplayName()));
+        this.sourceArenaList.add(arena);
 
         YamlConfiguration configuration = this.arenaConfigurationFile.getConfiguration();
 
@@ -63,12 +65,16 @@ public class ArenaManager {
         this.arenaConfigurationFile.saveConfig();
     }
 
-    public List<Arena> getArenas(){
-        return arenaList;
+    public List<Arena> getSourceArenaList() {
+        return sourceArenaList;
     }
 
-    public Arena findSpecificArena(String specificArenaDisplayName) {
-        for (Arena arena : getArenas()) {
+    public List<Arena> getDupArenaList(){
+        return dupArenaList;
+    }
+
+    public Arena findSpecificSourceArena(String specificArenaDisplayName) {
+        for (Arena arena : getSourceArenaList()){
             if (arena.getDisplayName().equalsIgnoreCase(specificArenaDisplayName)){
                 return arena;
             }
@@ -76,8 +82,17 @@ public class ArenaManager {
         return null;
     }
 
-    public Arena findOpenArena() {
-        for (Arena arena : getArenas()) {
+    public Arena findSpecificDupArena(String specificArenaDisplayName) {
+        for (Arena arena : getDupArenaList()) {
+            if (arena.getDisplayName().equalsIgnoreCase(specificArenaDisplayName)){
+                return arena;
+            }
+        }
+        return null;
+    }
+
+    public Arena findOpenDupArena() {
+        for (Arena arena : getDupArenaList()) {
             if (arena.getArenaState() instanceof WaitingArenaState){
                 return arena;
             }
@@ -85,8 +100,8 @@ public class ArenaManager {
         return null;
     }
 
-    public Arena findSpecificOpenArena(String specificOpenArenaDisplayName) {
-        for (Arena arena : getArenas()) {
+    public Arena findSpecificOpenDupArena(String specificOpenArenaDisplayName) {
+        for (Arena arena : getDupArenaList()) {
             if (arena.getDisplayName().equalsIgnoreCase(specificOpenArenaDisplayName) && arena.getArenaState() instanceof WaitingArenaState){
                 return arena;
             }
@@ -95,7 +110,7 @@ public class ArenaManager {
     }
 
     public Arena findPlayerName(Player player) {
-        for (Arena arena : getArenas()) {
+        for (Arena arena : getDupArenaList()) {
             if (arena.getPlayers().contains(player.getUniqueId())){
                 return arena;
             }
@@ -103,14 +118,14 @@ public class ArenaManager {
         return null;
     }
 
-    public void deleteArenaFromEverything(Arena arena) {
+    public void deleteSourceArenaFromEverything(Arena arena) {
         this.arenaConfigurationFile.getConfiguration().set(arena.getConfigName(), null);
         this.arenaConfigurationFile.saveConfig();
 
-        this.arenaList.remove(arena);
+        this.sourceArenaList.remove(arena);
     }
 
-    public void deleteArenaItself(Arena arena) {
-        this.arenaList.remove(arena);
+    public void deleteDupeArenaItself(Arena arena) {
+        this.dupArenaList.remove(arena);
     }
 }
