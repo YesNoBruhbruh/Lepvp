@@ -36,4 +36,12 @@ public class ConfigurationFile {
     public void saveConfig() {
         this.configuration.save(file);
     }
+
+    @SneakyThrows
+    public void reloadConfig(){
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        this.configuration.load(file);
+    }
 }

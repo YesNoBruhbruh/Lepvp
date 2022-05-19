@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class LocalGameMap implements MapInterface{
+
     private final File sourceWorldFolder;
     private File activeWorldFolder;
 
@@ -51,9 +52,12 @@ public class LocalGameMap implements MapInterface{
 
     @Override
     public void unload() {
-        if (bukkitWorld != null) Bukkit.unloadWorld(bukkitWorld, false);
-        if (activeWorldFolder != null) FileUtil.delete(activeWorldFolder);
-
+        if (bukkitWorld != null){
+            if (activeWorldFolder != null) {
+                Bukkit.unloadWorld(bukkitWorld, false);
+                FileUtil.delete(activeWorldFolder);
+            }
+        }
         bukkitWorld = null;
         activeWorldFolder = null;
     }

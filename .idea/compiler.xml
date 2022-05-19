@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="lepvp" target="1.8" />
+      <module name="lepvp" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

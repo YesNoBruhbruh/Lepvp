@@ -121,6 +121,7 @@ public class ArenaManager {
     public void deleteSourceArenaFromEverything(Arena arena) {
         this.arenaConfigurationFile.getConfiguration().set(arena.getConfigName(), null);
         this.arenaConfigurationFile.saveConfig();
+        this.arenaConfigurationFile.reloadConfig();
 
         this.sourceArenaList.remove(arena);
     }
