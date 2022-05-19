@@ -1,7 +1,9 @@
 package me.maanraj514.map;
 
+import me.maanraj514.utility.Colorize;
 import me.maanraj514.utility.FileUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 
@@ -29,7 +31,7 @@ public class LocalGameMap implements MapInterface{
     public boolean load() {
         if (isLoaded()) return true;
         this.activeWorldFolder = new File(
-                Bukkit.getWorldContainer().getParentFile(), sourceWorldFolder.getName() + "_active_" + System.currentTimeMillis());
+                Bukkit.getWorldContainer().getParentFile(), sourceWorldFolder.getName() + ".active." + System.currentTimeMillis());
         try {
             FileUtil.copy(sourceWorldFolder, activeWorldFolder);
         } catch (IOException e) {
@@ -40,7 +42,10 @@ public class LocalGameMap implements MapInterface{
 
         this.bukkitWorld = Bukkit.createWorld(new WorldCreator(activeWorldFolder.getName()));
 
-        if (bukkitWorld != null) this.bukkitWorld.setAutoSave(false);
+        if (bukkitWorld != null) {
+            this.bukkitWorld.setDifficulty(Difficulty.HARD);
+            this.bukkitWorld.setAutoSave(false);
+        }
         return isLoaded();
     }
 
@@ -51,6 +56,20 @@ public class LocalGameMap implements MapInterface{
 
         bukkitWorld = null;
         activeWorldFolder = null;
+    }
+
+    @Override
+    public void delete(String name) {
+        World world = Bukkit.getWorld(name);
+        if (world == null) {
+            return;
+        }
+        File activeWorldFolder = world.getWorldFolder();
+        if (activeWorldFolder.exists()){
+            Bukkit.unloadWorld(world, false);
+            FileUtil.delete(activeWorldFolder);
+            Bukkit.getConsoleSender().sendMessage(Colorize.format("&aSuccessfully deleted the world and the world file"));
+        }
     }
 
     @Override

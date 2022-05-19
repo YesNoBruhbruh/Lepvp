@@ -27,6 +27,7 @@ public final class Lepvp extends JavaPlugin {
 
     public static Lepvp plugin;
     private Arena arena;
+    @Getter
     private MapInterface map;
 
     @Getter
@@ -34,6 +35,7 @@ public final class Lepvp extends JavaPlugin {
 
     FileConfiguration config = getConfig();
 
+    @Getter
     private Arena newArena;
 
     private File serverFolder;
@@ -70,7 +72,7 @@ public final class Lepvp extends JavaPlugin {
         super.onDisable();
         if (map != null){
             map.unload();
-            Bukkit.getLogger().info(Colorize.format("&aUnloaded map"));
+            Bukkit.getConsoleSender().sendMessage(Colorize.format("&cUnloaded the map"));
             if (newArena != null) {
                 plugin.getArenaManager().deleteDupeArenaItself(newArena);
                 Bukkit.getLogger().info(Colorize.format("&aDeleted arena"));
@@ -100,24 +102,18 @@ public final class Lepvp extends JavaPlugin {
 
         List<Arena> toAdd = new ArrayList<>();
 
-        for (Arena a : plugin.getArenaManager().getSourceArenaList()) {
-            if (a.getDisplayName().equalsIgnoreCase("worl")){
-                File mapToReset = new File(serverFolder, "worl");
-                if (mapToReset.exists()) {
-                    Bukkit.getLogger().info(Colorize.format("&aWORLD < worl > is not null, creating duplicate... "));
-                    map = new LocalGameMap(serverFolder, a.getDisplayName(), true);
+        for (Arena arena1 : plugin.getArenaManager().getSourceArenaList()) {
+            String arena1Name = arena1.getDisplayName();
+            File mapToReset = new File(arena1.getDisplayName());
+            if (mapToReset.exists()){
+                map = new LocalGameMap(serverFolder, arena1Name, true);
 
-                    Location newArenaSpawnLocationOne = new Location(map.getWorld(), 176.47361728203347, 143.0, 194.50800249618368, (float) 179.65533, (float) -0.3433746);
-                    Location newArenaSpawnLocationTwo = new Location(map.getWorld(), 176.53513062676734, 143.0, 175.50390878997212, (float) -0.0730896, (float) 0.2732811);
+                Location newArenaSpawnLocationOne = new Location(map.getWorld(), arena1.getSpawnLocationOne().getX(), arena1.getSpawnLocationOne().getY(), arena1.getSpawnLocationOne().getZ(), arena1.getSpawnLocationOne().getYaw(), arena1.getSpawnLocationOne().getPitch());
+                Location newArenaSpawnLocationTwo = new Location(map.getWorld(), arena1.getSpawnLocationTwo().getX(), arena1.getSpawnLocationTwo().getY(), arena1.getSpawnLocationTwo().getZ(), arena1.getSpawnLocationTwo().getYaw(), arena1.getSpawnLocationTwo().getPitch());
 
-                    newArena = new Arena(map.getWorld().getName(), map.getWorld().getName().toUpperCase(), newArenaSpawnLocationOne, newArenaSpawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
-                    toAdd.add(newArena);
-                    Bukkit.getLogger().info(Colorize.format("&aEVERYTHING LOADED IN PROPERLY (THE MAPS)"));
-                }else{
-                    Bukkit.getLogger().info(Colorize.format("&cWORLD < worl > is null, cancel creating duplicate..."));
-                }
-            }else{
-                Bukkit.getLogger().info(Colorize.format("&cThere is no arena with the worl displayname"));
+                newArena = new Arena(map.getWorld().getName(), map.getWorld().getName().toUpperCase(), newArenaSpawnLocationOne, newArenaSpawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
+                toAdd.add(newArena);
+                Bukkit.getLogger().info(Colorize.format("&aEVERYTHING LOADED IN PROPERLY (THE MAPS)"));
             }
         }
 

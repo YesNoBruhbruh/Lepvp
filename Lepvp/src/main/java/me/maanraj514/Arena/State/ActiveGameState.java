@@ -23,14 +23,11 @@ public class ActiveGameState extends ArenaState {
 
     @Getter
     private List<UUID> alivePlayers;
-    private Lepvp plugin;
     private boolean isOver = false;
 
     @Override
     public void onEnable(Lepvp plugin) {
         super.onEnable(plugin);
-
-        this.plugin = plugin;
 
         alivePlayers = new ArrayList<>(getArena().getPlayers());
 
@@ -122,7 +119,7 @@ public class ActiveGameState extends ArenaState {
                 getArena().sendMessage("&cNo alive players? Game Over anyway");
             }
 
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> getArena().setState(new WaitingArenaState(), plugin), 20 * 5);
+            plugin.getServer().getScheduler().runTaskLater(plugin, () -> getArena().setState(new ResetArenaState(), plugin), 20 * 5);
         }, 0, 4);
     }
 
