@@ -6,7 +6,9 @@ import me.maanraj514.Lepvp;
 import me.maanraj514.configuration.ConfigurationFile;
 import me.maanraj514.configuration.ConfigurationUtility;
 import me.maanraj514.PlayerRollBackManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -19,6 +21,7 @@ public class ArenaManager {
 
     private final List<Arena> dupArenaList;
     private final List<Arena> sourceArenaList;
+    private final List<World> gameWorlds;
 
     private final ConfigurationFile arenaConfigurationFile;
 
@@ -31,6 +34,7 @@ public class ArenaManager {
     public ArenaManager(Lepvp plugin) {
         this.dupArenaList = new ArrayList<>();
         this.sourceArenaList = new ArrayList<>();
+        this.gameWorlds = new ArrayList<>();
         this.arenaConfigurationFile = new ConfigurationFile(plugin, "arenas");
 
         for(String arenaConfigName : this.arenaConfigurationFile.getConfiguration().getKeys(false)){
@@ -71,6 +75,10 @@ public class ArenaManager {
 
     public List<Arena> getDupArenaList(){
         return dupArenaList;
+    }
+
+    public List<World> getGameWorlds() {
+        return gameWorlds;
     }
 
     public Arena findSpecificSourceArena(String specificArenaDisplayName) {

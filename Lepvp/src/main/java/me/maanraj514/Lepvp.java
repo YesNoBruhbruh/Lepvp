@@ -18,9 +18,7 @@ import me.maanraj514.map.MapInterface;
 import me.maanraj514.utility.Colorize;
 import me.maanraj514.utility.CoolDown;
 import me.maanraj514.utility.SlimeUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -85,6 +83,15 @@ public final class Lepvp extends JavaPlugin {
     @Override
     public void onDisable() {
         super.onDisable();
+        if (Bukkit.getPluginManager().getPlugin("SlimeWorldManager") != null){
+            for (World world : getArenaManager().getGameWorlds()) {
+                Bukkit.unloadWorld(world, false);
+            }
+        }
+        if (Bukkit.getWorld("test") != null) {
+            SlimeUtil.unloadWorld("test");
+            System.out.println("test");
+        }
         if (map != null){
             map.unload();
             Bukkit.getConsoleSender().sendMessage(Colorize.format("&cUnloaded the map"));
@@ -113,12 +120,49 @@ public final class Lepvp extends JavaPlugin {
         pm.registerEvents(new CommonStateListener(arena, plugin), this);
     }
 
+    public void loadGameWorlds() {
+        for (Arena arena : getArenaManager().getSourceArenaList()) {
+            World world = new WorldCreator(arena.getDisplayName()).createWorld();
+            getArenaManager().getGameWorlds().add(world);
+            if (world != null) Bukkit.unloadWorld(world, false);
+        }
+    }
+
     public void doSlimeStuff() {
+        List<Arena> toAdd = new ArrayList<>();
 
-        SlimeLoader loader = slime.getLoader("file");
-        SlimeUtil.importWorld("worl", new File(serverFolder + File.separator + "worl"), loader, this);
+        loadGameWorlds();
 
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            for (World world : getArenaManager().getGameWorlds()) {
+                SlimeUtil.importWorld(world.getName(), new File(serverFolder + File.separator + world.getName()), this);
+            }
+            Bukkit.getScheduler().runTaskLater(this, () -> {
+                SlimeUtil.loadWorld("test", this);
+                for (World world : getArenaManager().getGameWorlds()){
+                    SlimeUtil.loadWorld(world.getName(), this);
+                }
+                Bukkit.getScheduler().runTaskLater(this, () -> {
+                    for (Arena arena : plugin.getArenaManager().getSourceArenaList()){
+                        String arenaName = arena.getDisplayName();
+                        for (World world : getArenaManager().getGameWorlds()) {
+                            if (world.getName().equalsIgnoreCase(arenaName)){
+                                Location newArenaSpawnLocationOne = new Location(world, 41.65894194008685, 64.0, 16.428342833644226, (float) -176.24797, (float) -9.477018);
+                                Location newArenaSpawnLocationTwo = new Location(world, 40.81675029565928, 63.0, 8.29202435357428, (float) 174.53975, (float) 9.949412);
 
+                                newArena = new Arena(world.getName(), world.getName().toUpperCase(), newArenaSpawnLocationOne, newArenaSpawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
+                                toAdd.add(newArena);
+                                Bukkit.getLogger().info(Colorize.format("&aEVERYTHING LOADED IN PROPERLY (THE SLIME MAPS)"));
+                            }
+                        }
+                    }
+                    for (Arena a1 : toAdd){
+                        plugin.getArenaManager().getDupArenaList().add(a1);
+                        Bukkit.getLogger().info(Colorize.format("&aEVERYTHING ADDED IN PROPERLY (THE SLIME MAP)"));
+                    }
+                }, 20*5);
+            }, 20*5);
+        }, 20*5);
     }
 
     public void doMapStuff() {
@@ -127,7 +171,7 @@ public final class Lepvp extends JavaPlugin {
 
         for (Arena arena1 : plugin.getArenaManager().getSourceArenaList()) {
             String arena1Name = arena1.getDisplayName();
-            File mapToReset = new File(arena1.getDisplayName());
+            File mapToReset = new File(arena1Name);
             if (mapToReset.exists()){
                 map = new LocalGameMap(serverFolder, arena1Name, true);
 
