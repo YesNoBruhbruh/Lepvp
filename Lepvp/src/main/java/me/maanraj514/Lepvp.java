@@ -1,6 +1,11 @@
 package me.maanraj514;
 
 import com.grinderwolf.swm.api.SlimePlugin;
+import com.grinderwolf.swm.api.exceptions.InvalidWorldException;
+import com.grinderwolf.swm.api.exceptions.WorldAlreadyExistsException;
+import com.grinderwolf.swm.api.exceptions.WorldLoadedException;
+import com.grinderwolf.swm.api.exceptions.WorldTooBigException;
+import com.grinderwolf.swm.api.loaders.SlimeLoader;
 import lombok.Getter;
 import me.maanraj514.Arena.Arena;
 import me.maanraj514.Arena.ArenaManager;
@@ -10,10 +15,9 @@ import me.maanraj514.Arena.State.WaitingArenaState;
 import me.maanraj514.commands.*;
 import me.maanraj514.map.LocalGameMap;
 import me.maanraj514.map.MapInterface;
-import me.maanraj514.slime.SlimeGameMap;
-import me.maanraj514.slime.SlimeInterface;
 import me.maanraj514.utility.Colorize;
 import me.maanraj514.utility.CoolDown;
+import me.maanraj514.utility.SlimeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -22,6 +26,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +37,6 @@ public final class Lepvp extends JavaPlugin {
     private Arena arena;
     @Getter
     private MapInterface map;
-
-    private SlimeInterface slimeI;
 
     @Getter
     private SlimePlugin slime;
@@ -112,32 +115,10 @@ public final class Lepvp extends JavaPlugin {
 
     public void doSlimeStuff() {
 
-        List<Arena> toAdd = new ArrayList<>();
+        SlimeLoader loader = slime.getLoader("file");
+        SlimeUtil.importWorld("worl", new File(serverFolder + File.separator + "worl"), loader, this);
 
-        for (Arena arena1 : plugin.getArenaManager().getSourceArenaList()) {
-            String arena1Name = arena1.getDisplayName();
 
-            if (Bukkit.getWorld(arena1Name) == null) {
-                System.out.println("what the fuck");
-                return;
-            }
-
-            if (Bukkit.getWorld(arena1Name) != null) {
-                slimeI = new SlimeGameMap(arena1Name, arena1Name, true, this);
-
-                Location newArenaSpawnLocationOne = new Location(map.getWorld(), arena1.getSpawnLocationOne().getX(), arena1.getSpawnLocationOne().getY(), arena1.getSpawnLocationOne().getZ(), arena1.getSpawnLocationOne().getYaw(), arena1.getSpawnLocationOne().getPitch());
-                Location newArenaSpawnLocationTwo = new Location(map.getWorld(), arena1.getSpawnLocationTwo().getX(), arena1.getSpawnLocationTwo().getY(), arena1.getSpawnLocationTwo().getZ(), arena1.getSpawnLocationTwo().getYaw(), arena1.getSpawnLocationTwo().getPitch());
-
-                newArena = new Arena(slimeI.getWorld().getName(), slimeI.getWorld().getName().toUpperCase(), newArenaSpawnLocationOne, newArenaSpawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
-                toAdd.add(newArena);
-                Bukkit.getServer().getConsoleSender().sendMessage(Colorize.format("&aEVERYTHING LOADED IN PROPERLY (THE " + "&7SLIME" + " &aMAP"));
-            }
-        }
-
-        for (Arena a1 : toAdd){
-            plugin.getArenaManager().getDupArenaList().add(a1);
-            Bukkit.getServer().getConsoleSender().sendMessage(Colorize.format("&aEVERYTHING ADDED IN PROPERLY (THE SLIME SLIME SLIME!!! MAP)"));
-        }
     }
 
     public void doMapStuff() {
