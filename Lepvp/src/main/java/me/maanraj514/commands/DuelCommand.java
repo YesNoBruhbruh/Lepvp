@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import me.maanraj514.Arena.Arena;
 import me.maanraj514.Lepvp;
 import me.maanraj514.utility.Colorize;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 @AllArgsConstructor
 public class DuelCommand implements CommandExecutor {
@@ -73,8 +76,15 @@ public class DuelCommand implements CommandExecutor {
                     Colorize.sendMessage(player, "&cYou are already in that arena bozo");
                     return true;
                 }
-
-                specificOpenArena.addPlayer(player, plugin);
+                AtomicInteger time = new AtomicInteger(5);
+                Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+                    time.getAndDecrement();
+                    if (time.get() <= 0) {
+                        specificOpenArena.addPlayer(player, plugin);
+                    }else{
+                        Colorize.sendMessage(player, "&aYou are gonna be sent to " + specificOpenArena.getDisplayName() + " &ain " + time + " &7seconds.");
+                    }
+                }, 0, 20);
             }
         }
         return true;

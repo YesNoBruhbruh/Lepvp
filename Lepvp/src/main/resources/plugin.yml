@@ -3,6 +3,8 @@ version: '1.18'
 main: me.maanraj514.Lepvp
 api-version: 1.18
 author: me.Maanraj514
+softdepend:
+  - SlimeWorldManager
 commands:
   setLobby:
     usage: /<command>
