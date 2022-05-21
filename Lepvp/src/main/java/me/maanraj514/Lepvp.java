@@ -1,6 +1,5 @@
 package me.maanraj514;
 
-import com.grinderwolf.swm.api.SlimePlugin;
 import lombok.Getter;
 import me.maanraj514.Arena.Arena;
 import me.maanraj514.Arena.ArenaManager;
@@ -12,7 +11,6 @@ import me.maanraj514.map.LocalGameMap;
 import me.maanraj514.map.MapInterface;
 import me.maanraj514.utility.Colorize;
 import me.maanraj514.utility.CoolDown;
-import me.maanraj514.utility.SlimeUtil;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -29,9 +27,6 @@ public final class Lepvp extends JavaPlugin {
     private Arena arena;
     @Getter
     private MapInterface map;
-
-    @Getter
-    private SlimePlugin slime;
 
     @Getter
     private ArenaManager arenaManager;
@@ -130,7 +125,6 @@ public final class Lepvp extends JavaPlugin {
         plugin = this;
         arena = new Arena();
         this.arenaManager = new ArenaManager(this);
-        slime = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
     }
 
     public void initItems() {

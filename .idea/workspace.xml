@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="53f337fd-b7b7-469f-ab8b-8b89b375c576" name="Changes" comment="testing stuff">
+    <list default="true" id="53f337fd-b7b7-469f-ab8b-8b89b375c576" name="Changes" comment="reset back to normal reset system because I didn't figure out how to fix the slime one :')">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_flowpowered_flow_nbt_2_0_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_grinderwolf_slimeworldmanager_api_2_8_0_SNAPSHOT.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ArenaManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ArenaManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lepvp/lepvp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/lepvp.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Lepvp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Lepvp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/utility/SlimeUtil.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +124,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653038574651</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="reset back to normal reset system because I didn't figure out how to fix the slime one :')">
+      <created>1653107480707</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1653107480707</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -144,6 +153,7 @@
     <MESSAGE value="first test of a map reset system and it works! after many months of trying I finally figured it out! get ready for a major update to the lepvp plugin!" />
     <MESSAGE value="map reset system works" />
     <MESSAGE value="testing stuff" />
-    <option name="LAST_COMMIT_MESSAGE" value="testing stuff" />
+    <MESSAGE value="reset back to normal reset system because I didn't figure out how to fix the slime one :')" />
+    <option name="LAST_COMMIT_MESSAGE" value="reset back to normal reset system because I didn't figure out how to fix the slime one :')" />
   </component>
 </project>
