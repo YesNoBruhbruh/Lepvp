@@ -36,6 +36,11 @@ public final class Lepvp extends JavaPlugin {
     @Getter
     private Arena newArena;
 
+    @Getter
+    List<LocalGameMap> gameMapsToUnload;
+    @Getter
+    List<Arena> arenasToUnload;
+
     private File serverFolder;
 
     @Override
@@ -68,13 +73,13 @@ public final class Lepvp extends JavaPlugin {
     @Override
     public void onDisable() {
         super.onDisable();
-        if (map != null){
-            map.unload();
-            Bukkit.getConsoleSender().sendMessage(Colorize.format("&cUnloaded the map"));
-            if (newArena != null) {
-                plugin.getArenaManager().deleteDupeArenaItself(newArena);
-                Bukkit.getLogger().info(Colorize.format("&aDeleted arena"));
-            }
+        for (LocalGameMap gameMap : gameMapsToUnload) {
+            map.delete(gameMap.getWorld().getName());
+            Bukkit.getConsoleSender().sendMessage(Colorize.format("&cUnloaded the map " + gameMap.getWorld().getName()));
+        }
+        for (Arena arena : arenasToUnload) {
+            plugin.getArenaManager().deleteDupeArenaItself(newArena);
+            Bukkit.getLogger().info(Colorize.format("&aDeleted arena ") + arena.getDisplayName());
         }
 
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "-----------------------");
@@ -102,7 +107,7 @@ public final class Lepvp extends JavaPlugin {
 
         for (Arena arena1 : plugin.getArenaManager().getSourceArenaList()) {
             String arena1Name = arena1.getDisplayName();
-            File mapToReset = new File(arena1Name);
+            File mapToReset = new File(arena1.getDisplayName());
             if (mapToReset.exists()){
                 map = new LocalGameMap(serverFolder, arena1Name, true);
 
@@ -111,6 +116,8 @@ public final class Lepvp extends JavaPlugin {
 
                 newArena = new Arena(map.getWorld().getName(), map.getWorld().getName().toUpperCase(), newArenaSpawnLocationOne, newArenaSpawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
                 toAdd.add(newArena);
+                gameMapsToUnload.add((LocalGameMap) map);
+                arenasToUnload.add(newArena);
                 Bukkit.getLogger().info(Colorize.format("&aEVERYTHING LOADED IN PROPERLY (THE MAPS)"));
             }
         }
@@ -125,6 +132,9 @@ public final class Lepvp extends JavaPlugin {
         plugin = this;
         arena = new Arena();
         this.arenaManager = new ArenaManager(this);
+
+        gameMapsToUnload = new ArrayList<>();
+        arenasToUnload = new ArrayList<>();
     }
 
     public void initItems() {

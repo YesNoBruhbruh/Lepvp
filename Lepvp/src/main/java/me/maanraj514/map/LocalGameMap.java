@@ -2,10 +2,7 @@ package me.maanraj514.map;
 
 import me.maanraj514.utility.Colorize;
 import me.maanraj514.utility.FileUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.Difficulty;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
+import org.bukkit.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +42,8 @@ public class LocalGameMap implements MapInterface{
 
         if (bukkitWorld != null) {
             this.bukkitWorld.setDifficulty(Difficulty.HARD);
+            this.bukkitWorld.setGameRule(GameRule.DO_MOB_SPAWNING, false);
+            this.bukkitWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
             this.bukkitWorld.setAutoSave(false);
         }
         return isLoaded();

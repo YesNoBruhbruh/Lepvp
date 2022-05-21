@@ -50,6 +50,7 @@ public class ActiveGameState extends ArenaState {
             player.getInventory().setLeggings(NetheriteLeggings.NetheriteLeggings);
             player.getInventory().setBoots(NetheriteBoots.NetheriteBoots);
 
+            player.getInventory().setItemInOffHand(new ItemStack(Material.TOTEM_OF_UNDYING));
             player.getInventory().setItem(0, NetheriteSword.NetheriteSword);
             player.getInventory().setItem(1, new ItemStack(Material.ENDER_PEARL, 16));
             player.getInventory().setItem(4, new ItemStack(Material.GOLDEN_APPLE, 64));
