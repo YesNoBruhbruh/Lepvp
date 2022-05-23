@@ -4,6 +4,7 @@ import com.grinderwolf.swm.api.SlimePlugin;
 import lombok.Getter;
 import me.maanraj514.Arena.Arena;
 import me.maanraj514.Arena.ArenaManager;
+import me.maanraj514.Arena.ArenaStatus;
 import me.maanraj514.Arena.ItemStacks.*;
 import me.maanraj514.Arena.State.CommonStateListener;
 import me.maanraj514.Arena.State.WaitingArenaState;
@@ -152,6 +153,7 @@ public final class Lepvp extends JavaPlugin {
                     }
                     for (Arena a : toAdd) {
                         plugin.getArenaManager().getDupArenaList().add(a);
+                        getArenaManager().setArenaStatus(ArenaStatus.READY);
                         Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "LOADED SLIME MAP " + a.getDisplayName());
                     }
                 }, 20*4);
@@ -182,6 +184,7 @@ public final class Lepvp extends JavaPlugin {
 
         for (Arena a1 : toAdd){
             plugin.getArenaManager().getDupArenaList().add(a1);
+            getArenaManager().setArenaStatus(ArenaStatus.READY);
             Bukkit.getLogger().info(Colorize.format("&aEVERYTHING ADDED IN PROPERLY (THE MAP)"));
         }
     }

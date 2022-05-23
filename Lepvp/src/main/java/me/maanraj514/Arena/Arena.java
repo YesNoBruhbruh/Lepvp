@@ -45,24 +45,28 @@ public class Arena {
     }
 
     public void addPlayer(Player player, Lepvp plugin) {
-        this.players.add(player.getUniqueId());
-        sendMessage("&a" + player.getDisplayName() + " joined the match.");
+        if (plugin.getArenaManager().getArenaStatus() == ArenaStatus.READY){
+            this.players.add(player.getUniqueId());
+            sendMessage("&a" + player.getDisplayName() + " joined the match.");
 
-        plugin.getArenaManager().getRollBackManager().save(player);
-        player.setGameMode(GameMode.SURVIVAL);
+            plugin.getArenaManager().getRollBackManager().save(player);
+            player.setGameMode(GameMode.SURVIVAL);
 
-        if (players.size() == 1){
-            player.teleport(spawnLocationOne);
-        } else {
-            player.teleport(spawnLocationTwo);
-        }
+            if (players.size() == 1){
+                player.teleportAsync(spawnLocationOne);
+            } else {
+                player.teleportAsync(spawnLocationTwo);
+            }
 
-        if (players.size() == MAX_PLAYERS) {
-            setState(new StartingArenaState(), plugin);
-        }
+            System.out.println("among us");
 
-        if (players.size() == ONE_PLAYER) {
-            setState(new WaitingArenaState(), plugin);
+            if (players.size() == MAX_PLAYERS) {
+                setState(new StartingArenaState(), plugin);
+            }
+
+            if (players.size() == ONE_PLAYER) {
+                setState(new WaitingArenaState(), plugin);
+            }
         }
     }
 

@@ -76,15 +76,8 @@ public class DuelCommand implements CommandExecutor {
                     Colorize.sendMessage(player, "&cYou are already in that arena bozo");
                     return true;
                 }
-                AtomicInteger time = new AtomicInteger(5);
-                Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-                    time.getAndDecrement();
-                    if (time.get() <= 0) {
-                        specificOpenArena.addPlayer(player, plugin);
-                    }else{
-                        Colorize.sendMessage(player, "&aYou are gonna be sent to " + specificOpenArena.getDisplayName() + " &ain " + time + " &7seconds.");
-                    }
-                }, 0, 20);
+                specificOpenArena.addPlayer(player, plugin);
+                Colorize.sendMessage(player, "&aYou are being sent to " + specificOpenArena.getDisplayName());
             }
         }
         return true;

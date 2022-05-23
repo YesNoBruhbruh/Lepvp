@@ -1,6 +1,7 @@
 package me.maanraj514.Arena.State;
 
 import lombok.Getter;
+import me.maanraj514.Arena.ArenaStatus;
 import me.maanraj514.Arena.ItemStacks.*;
 import me.maanraj514.Lepvp;
 import org.bukkit.*;
@@ -28,6 +29,8 @@ public class ActiveGameState extends ArenaState {
     @Override
     public void onEnable(Lepvp plugin) {
         super.onEnable(plugin);
+
+        plugin.getArenaManager().setArenaStatus(ArenaStatus.PLAYING);
 
         alivePlayers = new ArrayList<>(getArena().getPlayers());
 

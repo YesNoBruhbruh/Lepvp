@@ -1,6 +1,7 @@
 package me.maanraj514.Arena;
 
 import lombok.Getter;
+import lombok.Setter;
 import me.maanraj514.Arena.State.WaitingArenaState;
 import me.maanraj514.Lepvp;
 import me.maanraj514.configuration.ConfigurationFile;
@@ -24,6 +25,9 @@ public class ArenaManager {
 
     private final ConfigurationFile arenaConfigurationFile;
 
+    @Getter @Setter
+    private ArenaStatus arenaStatus;
+
     @Getter
     private final ArenaSetupManager arenaSetupManager;
 
@@ -43,6 +47,7 @@ public class ArenaManager {
             Location spawnLocationTwo = ConfigurationUtility.readLocation(Objects.requireNonNull(section.getConfigurationSection("spawnLocationTwo")));
 
             Arena arena = new Arena(arenaConfigName, displayName, spawnLocationOne, spawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
+            this.arenaStatus = ArenaStatus.WAITING;
             this.sourceArenaList.add(arena);
         }
 
