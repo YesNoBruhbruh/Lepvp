@@ -41,10 +41,10 @@ public class ActiveGameState extends ArenaState {
             if (player == null || !player.isOnline()) continue;
 
             if (lastSpawnId == 0) {
-                player.teleport(getArena().getSpawnLocationOne());
+                player.teleportAsync(getArena().getSpawnLocationOne());
                 lastSpawnId = 1;
             } else {
-                player.teleport(getArena().getSpawnLocationTwo());
+                player.teleportAsync(getArena().getSpawnLocationOne());
                 lastSpawnId = 0;
             }
 

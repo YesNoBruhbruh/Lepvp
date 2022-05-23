@@ -37,11 +37,14 @@ public class Arena {
 
     public void setState(ArenaState arenaState, Lepvp plugin) {
         if(this.arenaState.getClass() == arenaState.getClass()) return;
-
-        this.arenaState.onDisable();
-        this.arenaState = arenaState;
-        this.arenaState.setArena(this);
-        this.arenaState.onEnable(plugin);
+        if (plugin.getArenaManager().getArenaStatus() == ArenaStatus.READY || plugin.getArenaManager().getArenaStatus() == ArenaStatus.PLAYING) {
+            this.arenaState.onDisable();
+            this.arenaState = arenaState;
+            this.arenaState.setArena(this);
+            this.arenaState.onEnable(plugin);
+        }else{
+            Bukkit.getConsoleSender().sendMessage(Colorize.format("&cThe arena isnt ready yet"));
+        }
     }
 
     public void addPlayer(Player player, Lepvp plugin) {
@@ -54,18 +57,22 @@ public class Arena {
 
             if (players.size() == 1){
                 player.teleportAsync(spawnLocationOne);
+                System.out.println(spawnLocationOne);
+                System.out.println("test1");
             } else {
                 player.teleportAsync(spawnLocationTwo);
+                System.out.println(spawnLocationTwo);
+                System.out.println("test2");
             }
-
-            System.out.println("among us");
 
             if (players.size() == MAX_PLAYERS) {
                 setState(new StartingArenaState(), plugin);
+                System.out.println("test3");
             }
 
             if (players.size() == ONE_PLAYER) {
                 setState(new WaitingArenaState(), plugin);
+                System.out.println("test4");
             }
         }
     }

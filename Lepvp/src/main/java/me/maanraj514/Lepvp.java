@@ -156,7 +156,7 @@ public final class Lepvp extends JavaPlugin {
                         getArenaManager().setArenaStatus(ArenaStatus.READY);
                         Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "LOADED SLIME MAP " + a.getDisplayName());
                     }
-                }, 20*4);
+                }, 20*3);
             }, 20*3);
         }, 20*3);
     }
