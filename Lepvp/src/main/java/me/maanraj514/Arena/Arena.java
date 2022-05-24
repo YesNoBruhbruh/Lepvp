@@ -37,13 +37,13 @@ public class Arena {
 
     public void setState(ArenaState arenaState, Lepvp plugin) {
         if(this.arenaState.getClass() == arenaState.getClass()) return;
-        if (plugin.getArenaManager().getArenaStatus() == ArenaStatus.READY || plugin.getArenaManager().getArenaStatus() == ArenaStatus.PLAYING) {
+        if (plugin.getArenaManager().getArenaStatus() == ArenaStatus.READY || plugin.getArenaManager().getArenaStatus() == ArenaStatus.PLAYING || plugin.getArenaManager().getArenaStatus() == ArenaStatus.WAITING) {
             this.arenaState.onDisable();
             this.arenaState = arenaState;
             this.arenaState.setArena(this);
             this.arenaState.onEnable(plugin);
         }else{
-            Bukkit.getConsoleSender().sendMessage(Colorize.format("&cThe arena isnt ready yet"));
+            Bukkit.getConsoleSender().sendMessage(Colorize.format("&cThe arena isnt ready yet or some other random error"));
         }
     }
 

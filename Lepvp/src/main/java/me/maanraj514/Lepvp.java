@@ -13,6 +13,7 @@ import me.maanraj514.map.LocalGameMap;
 import me.maanraj514.map.MapInterface;
 import me.maanraj514.utility.Colorize;
 import me.maanraj514.utility.CoolDown;
+import me.maanraj514.utility.FileUtil;
 import me.maanraj514.utility.SlimeUtil;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,6 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public final class Lepvp extends JavaPlugin {
@@ -46,10 +48,6 @@ public final class Lepvp extends JavaPlugin {
     List<World> gameWorlds;
     @Getter
     List<World> slimeWorldsToUnload;
-    @Getter
-    List<LocalGameMap> gameMapsToUnload;
-    @Getter
-    List<Arena> arenasToUnload;
 
     private File serverFolder;
 
@@ -71,7 +69,10 @@ public final class Lepvp extends JavaPlugin {
 
         serverFolder = new File(getServer().getWorldContainer().getAbsolutePath());
 
-        if (Bukkit.getPluginManager().getPlugin("SlimeWorldManager") != null) {
+        cleanUpMaps();
+        cleanUpArenas();
+
+        if (doesSWMExist()) {
             doSlimeStuff();
         }else{
             doMapStuff();
@@ -87,17 +88,11 @@ public final class Lepvp extends JavaPlugin {
     @Override
     public void onDisable() {
         super.onDisable();
-        if (Bukkit.getPluginManager().getPlugin("SlimeWorldManager") != null) {
+        if (doesSWMExist()) {
 
         }else{
-            for (LocalGameMap gameMap : gameMapsToUnload) {
-                map.delete(gameMap.getWorld().getName());
-                Bukkit.getConsoleSender().sendMessage(Colorize.format("&cUnloaded the map " + gameMap.getWorld().getName()));
-            }
-            for (Arena arena : arenasToUnload) {
-                plugin.getArenaManager().deleteDupeArenaItself(newArena);
-                Bukkit.getLogger().info(Colorize.format("&aDeleted arena ") + arena.getDisplayName());
-            }
+            cleanUpMaps();
+            cleanUpArenas();
         }
 
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "-----------------------");
@@ -117,6 +112,24 @@ public final class Lepvp extends JavaPlugin {
     public void registerListeners() {
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new CommonStateListener(arena, plugin), this);
+    }
+
+    public void cleanUpMaps() {
+        for (File file : Objects.requireNonNull(serverFolder.listFiles())){
+            if (file.getName().contains(".active.")){
+                Bukkit.getConsoleSender().sendMessage(Colorize.format("&eDeleting map " + file.getName()));
+                Bukkit.unloadWorld(file.getName(), false);
+                FileUtil.delete(file);
+            }
+        }
+    }
+    public void cleanUpArenas() {
+        if (getArenaManager().getDupArenaList() != null) {
+            for (Arena arena : getArenaManager().getDupArenaList()) {
+                Bukkit.getConsoleSender().sendMessage(Colorize.format("&eDeleting arena " + arena.getDisplayName()));
+                getArenaManager().deleteDupeArenaItself(arena);
+            }
+        }
     }
 
     public void doSlimeStuff() {
@@ -146,7 +159,6 @@ public final class Lepvp extends JavaPlugin {
                                 newArena = new Arena(w.getName(), w.getName().toUpperCase(), newArenaLocationOne, newArenaLocationTwo, new WaitingArenaState(), new ArrayList<>());
                                 toAdd.add(newArena);
                                 slimeWorldsToUnload.add(w);
-                                arenasToUnload.add(newArena);
                                 Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "ADDED SLIME MAP " + w.getName());
                             }
                         }
@@ -176,8 +188,6 @@ public final class Lepvp extends JavaPlugin {
 
                 newArena = new Arena(map.getWorld().getName(), map.getWorld().getName().toUpperCase(), newArenaSpawnLocationOne, newArenaSpawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
                 toAdd.add(newArena);
-                gameMapsToUnload.add((LocalGameMap) map);
-                arenasToUnload.add(newArena);
                 Bukkit.getLogger().info(Colorize.format("&aEVERYTHING LOADED IN PROPERLY (THE MAPS)"));
             }
         }
@@ -193,14 +203,18 @@ public final class Lepvp extends JavaPlugin {
         plugin = this;
         arena = new Arena();
         this.arenaManager = new ArenaManager(this);
-        if (Bukkit.getPluginManager().getPlugin("SlimeWorldManager") != null) {
+        if (doesSWMExist()) {
             slime = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
         }
-
-        gameMapsToUnload = new ArrayList<>();
-        arenasToUnload = new ArrayList<>();
         gameWorlds = new ArrayList<>();
         slimeWorldsToUnload = new ArrayList<>();
+    }
+
+    public boolean doesSWMExist() {
+        if (Bukkit.getPluginManager().getPlugin("SlimeWorldManager") != null) {
+            return true;
+        }
+        return false;
     }
 
     public void initItems() {
