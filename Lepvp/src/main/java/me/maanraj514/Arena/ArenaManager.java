@@ -125,6 +125,10 @@ public class ArenaManager {
         return null;
     }
 
+    public void addArenaToDupArenaList(Arena arena) {
+        dupArenaList.add(arena);
+    }
+
     public void deleteSourceArenaFromEverything(Arena arena) {
         this.arenaConfigurationFile.getConfiguration().set(arena.getConfigName(), null);
         this.arenaConfigurationFile.saveConfig();

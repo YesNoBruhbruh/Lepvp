@@ -19,6 +19,7 @@ public class PlayerRollBackManager {
     private final Map<UUID, ItemStack[]> previousArmourContents = new HashMap<>();
     private final Map<UUID, Integer> previousHungerValue = new HashMap<>();
     private final Map<UUID, Integer> previousLevelMap = new HashMap<>();
+    private final Map<UUID, Double> previousHealthMap = new HashMap<>();
 
     public void save(Player player) {
         previousLocationMap.put(player.getUniqueId(), player.getLocation());
@@ -27,6 +28,7 @@ public class PlayerRollBackManager {
         previousArmourContents.put(player.getUniqueId(), player.getInventory().getArmorContents());
         previousHungerValue.put(player.getUniqueId(), player.getFoodLevel());
         previousLevelMap.put(player.getUniqueId(), player.getLevel());
+        previousHealthMap.put(player.getUniqueId(), player.getHealth());
         player.getInventory().clear();
     }
 
@@ -57,6 +59,8 @@ public class PlayerRollBackManager {
         player.setFoodLevel(previousHungerValue.getOrDefault(player.getUniqueId(), 20));
 
         player.setLevel(previousLevelMap.getOrDefault(player.getUniqueId(), 0));
+
+        player.setHealth(previousHealthMap.getOrDefault(player.getUniqueId(), 20.0));
 
         previousHungerValue.remove(player.getUniqueId());
         previousLocationMap.remove(player.getUniqueId());
