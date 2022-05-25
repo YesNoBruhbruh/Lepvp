@@ -49,12 +49,8 @@ public class PlayerRollBackManager {
         }
 
         Location previousLocation = previousLocationMap.get(player.getUniqueId());
-        if (plugin.getConfig().get("player-location") != null){
-            player.teleport((Location) plugin.getConfig().get("player-location"));
-        }else{
-            if (previousLocation != null) {
-                player.teleport(previousLocation);
-            }
+        if (previousLocation != null) {
+            player.teleportAsync(previousLocation);
         }
         player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
 

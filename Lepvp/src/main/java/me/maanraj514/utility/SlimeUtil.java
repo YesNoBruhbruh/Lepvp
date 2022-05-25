@@ -36,6 +36,8 @@ public class SlimeUtil {
             try {
                 SlimePropertyMap spm = new SlimePropertyMap();
                 spm.setValue(SlimeProperties.DIFFICULTY, "hard");
+                spm.setValue(SlimeProperties.ALLOW_ANIMALS, false);
+                spm.setValue(SlimeProperties.ALLOW_MONSTERS, false);
 
                 SlimeWorld slimeWorld = plugin.getSlime().loadWorld(loader, worldName, true, spm);
                 Bukkit.getScheduler().runTask(plugin, () -> {

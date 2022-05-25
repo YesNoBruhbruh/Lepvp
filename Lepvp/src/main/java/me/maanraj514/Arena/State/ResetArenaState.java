@@ -21,11 +21,6 @@ import java.util.UUID;
 
 public class ResetArenaState extends ArenaState{
 
-    private String dupArenaName;
-    private Player player;
-    private Arena newArena;
-    private String world;
-
     @Override
     public void onEnable(Lepvp plugin) {
         super.onEnable(plugin);
@@ -36,19 +31,7 @@ public class ResetArenaState extends ArenaState{
 
         List<Arena> arenasToAdd = new ArrayList<>();
 
-        newArena = plugin.getNewArena();
-
-        for (Arena arena : plugin.getArenaManager().getDupArenaList()) {
-            dupArenaName = arena.getDisplayName();
-        }
-
-        UUID playerUID = getArena().getPlayers().get(0);
-        player = Bukkit.getPlayer(playerUID);
-
-        if (player != null){
-            world = player.getWorld().getName();
-            System.out.println(world);
-        }
+        String arenaWorldName = getArena().getDisplayName().toLowerCase();
 
         for (UUID playerUUID : getArena().getPlayers()){
             Player bukkitPlayer = Bukkit.getPlayer(playerUUID);
@@ -58,64 +41,46 @@ public class ResetArenaState extends ArenaState{
             plugin.getArenaManager().getRollBackManager().restore(bukkitPlayer, plugin);
         }
         if (plugin.doesSWMExist()){
-            if (plugin.getArenaManager().getDupArenaList() != null) {
-                for (Arena arena : plugin.getArenaManager().getDupArenaList()) {
-                    if (arena.getDisplayName().equalsIgnoreCase(world)) {
-                        plugin.getArenaManager().deleteDupeArenaItself(arena);
+            if (Bukkit.getWorld(arenaWorldName) != null) {
+                SlimeUtil.unloadWorld(arenaWorldName);
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "TRIGGERED UNLOAD METHOD");
 
-                        SlimeUtil.unloadWorld(world);
-                        Bukkit.getConsoleSender().sendMessage(Colorize.format("&aUnloaded Slime world " + world));
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    SlimeUtil.loadWorld(arenaWorldName, plugin);
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "TRIGGERED LOAD METHOD");
 
-                        Location newArenaSpawnLocationOne = new Location(Bukkit.getWorld(world), arena.getSpawnLocationOne().getX(), arena.getSpawnLocationOne().getY(), arena.getSpawnLocationOne().getZ(), arena.getSpawnLocationOne().getYaw(), arena.getSpawnLocationOne().getPitch());
-                        Location newArenaSpawnLocationTwo = new Location(Bukkit.getWorld(world), arena.getSpawnLocationTwo().getX(), arena.getSpawnLocationTwo().getY(), arena.getSpawnLocationTwo().getZ(), arena.getSpawnLocationTwo().getYaw(), arena.getSpawnLocationTwo().getPitch());
+                    Location newArenaLocationOne = new Location(Bukkit.getWorld(arenaWorldName), getArena().getSpawnLocationOne().getX(), getArena().getSpawnLocationOne().getY(), getArena().getSpawnLocationOne().getZ(), getArena().getSpawnLocationOne().getYaw(), getArena().getSpawnLocationOne().getPitch());
+                    Location newArenaLocationTwo = new Location(Bukkit.getWorld(arenaWorldName), getArena().getSpawnLocationTwo().getX(), getArena().getSpawnLocationTwo().getY(), getArena().getSpawnLocationTwo().getZ(), getArena().getSpawnLocationTwo().getYaw(), getArena().getSpawnLocationTwo().getPitch());
 
-                        SlimeUtil.loadWorld(world, plugin);
-                        Bukkit.getConsoleSender().sendMessage(Colorize.format("Loaded Slime World " + world));
-
-                        newArena = new Arena(world, world.toUpperCase(), newArenaSpawnLocationOne, newArenaSpawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
-                        arenasToAdd.add(newArena);
-                        Bukkit.getConsoleSender().sendMessage(Colorize.format("&eMade new instance of arena with the name of " + world));
-                    }
-                }
-                for (Arena a1 : arenasToAdd){
-                    plugin.getArenaManager().getDupArenaList().add(a1);
-                    Bukkit.getConsoleSender().sendMessage(Colorize.format("&eThe Slime Map was added (reset arena state)"));
-                }
+                    Arena arena1 = new Arena(arenaWorldName, arenaWorldName.toUpperCase(), newArenaLocationOne, newArenaLocationTwo, new WaitingArenaState(), new ArrayList<>());
+                    arenasToAdd.add(arena1);
+                }, 20*3);
             }
-            plugin.getArenaManager().setArenaStatus(ArenaStatus.READY);
+            for (Arena a1 : arenasToAdd){
+                plugin.getArenaManager().getDupArenaList().add(a1);
+                Bukkit.getLogger().info(Colorize.format("&aTHE MAP " + getArena().getDisplayName().toLowerCase() + " HAS BEEN ADDED"));
+            }
+
         }else{
-            for (Arena arena1 : plugin.getArenaManager().getSourceArenaList()) {
-                String arena1Name = arena1.getDisplayName();
-                if (dupArenaName.startsWith(arena1Name)){
-                    if (world.equalsIgnoreCase(dupArenaName)){
-                        map = new LocalGameMap(new File(player.getServer().getWorldContainer().getAbsolutePath()), arena1Name, true);
+            if (Bukkit.getWorld(arenaWorldName) != null) {
+                map = new LocalGameMap(plugin.getServerFolder(), arenaWorldName, true);
 
-                        Location newArenaSpawnLocationOne = new Location(map.getWorld(), arena1.getSpawnLocationOne().getX(), arena1.getSpawnLocationOne().getY(), arena1.getSpawnLocationOne().getZ(), arena1.getSpawnLocationOne().getYaw(), arena1.getSpawnLocationOne().getPitch());
-                        Location newArenaSpawnLocationTwo = new Location(map.getWorld(), arena1.getSpawnLocationTwo().getX(), arena1.getSpawnLocationTwo().getY(), arena1.getSpawnLocationTwo().getZ(), arena1.getSpawnLocationTwo().getYaw(), arena1.getSpawnLocationTwo().getPitch());
+                Location newArenaSpawnLocationOne = new Location(map.getWorld(), getArena().getSpawnLocationOne().getX(), getArena().getSpawnLocationOne().getY(), getArena().getSpawnLocationOne().getZ(), getArena().getSpawnLocationOne().getYaw(), getArena().getSpawnLocationOne().getPitch());
+                Location newArenaSpawnLocationTwo = new Location(map.getWorld(), getArena().getSpawnLocationTwo().getX(), getArena().getSpawnLocationTwo().getY(), getArena().getSpawnLocationTwo().getZ(), getArena().getSpawnLocationTwo().getYaw(), getArena().getSpawnLocationTwo().getPitch());
 
-                        newArena = new Arena(map.getWorld().getName(), map.getWorld().getName().toUpperCase(), newArenaSpawnLocationOne, newArenaSpawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
-                        arenasToAdd.add(newArena);
-                        Bukkit.getLogger().info(Colorize.format("&aTHE MAP " + map.getWorld().getName() + " HAS BEEN LOADED"));
-                    }
-                }
+                Arena newArena = new Arena(map.getWorld().getName(), map.getWorld().getName().toUpperCase(), newArenaSpawnLocationOne, newArenaSpawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
+                arenasToAdd.add(newArena);
+                Bukkit.getLogger().info(Colorize.format("&aTHE MAP " + map.getWorld().getName() + " HAS BEEN LOADED"));
             }
 
             for (Arena a1 : arenasToAdd){
                 plugin.getArenaManager().getDupArenaList().add(a1);
-                Bukkit.getLogger().info(Colorize.format("&aTHE MAP" + map.getWorld().getName() + "HAS BEEN ADDED"));
+                Bukkit.getLogger().info(Colorize.format("&aTHE MAP " + map.getWorld().getName() + " HAS BEEN ADDED"));
             }
 
-            for (Arena arena : plugin.getArenaManager().getDupArenaList()) {
-                if (arena.getDisplayName().equalsIgnoreCase(world)){
-                    map.delete(dupArenaName);
-                    Bukkit.getConsoleSender().sendMessage(Colorize.format("&aThe map " + "&7" + arena.getDisplayName() + " &ahas been unloaded"));
-
-                    plugin.getArenaManager().deleteDupeArenaItself(arena);
-                    Bukkit.getConsoleSender().sendMessage(Colorize.format("&aThe arena " + "&7" + arena.getDisplayName() + " &ahas been deleted"));
-                }
-            }
-            plugin.getArenaManager().setArenaStatus(ArenaStatus.READY);
         }
+        plugin.getArenaManager().getDupArenaList().remove(getArena());
+        plugin.getArenaManager().setArenaStatus(ArenaStatus.READY);
 
         getArena().getPlayers().clear();
     }

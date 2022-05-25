@@ -57,22 +57,16 @@ public class Arena {
 
             if (players.size() == 1){
                 player.teleportAsync(spawnLocationOne);
-                System.out.println(spawnLocationOne);
-                System.out.println("test1");
             } else {
                 player.teleportAsync(spawnLocationTwo);
-                System.out.println(spawnLocationTwo);
-                System.out.println("test2");
             }
 
             if (players.size() == MAX_PLAYERS) {
                 setState(new StartingArenaState(), plugin);
-                System.out.println("test3");
             }
 
             if (players.size() == ONE_PLAYER) {
                 setState(new WaitingArenaState(), plugin);
-                System.out.println("test4");
             }
         }
     }

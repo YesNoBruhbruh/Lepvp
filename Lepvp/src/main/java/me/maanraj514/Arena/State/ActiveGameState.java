@@ -123,7 +123,7 @@ public class ActiveGameState extends ArenaState {
                 getArena().sendMessage("&cNo alive players? Game Over anyway");
             }
 
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> getArena().setState(new ResetArenaState(), plugin), 20 * 5);
+            plugin.getServer().getScheduler().runTaskLater(plugin, () -> getArena().setState(new ResetArenaState(), plugin), 20 * 10);
         }, 0, 4);
     }
 

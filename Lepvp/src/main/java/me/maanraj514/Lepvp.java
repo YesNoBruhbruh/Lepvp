@@ -21,9 +21,11 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 
 
 public final class Lepvp extends JavaPlugin {
@@ -42,13 +44,11 @@ public final class Lepvp extends JavaPlugin {
     FileConfiguration config = getConfig();
 
     @Getter
-    private Arena newArena;
-
-    @Getter
-    List<World> gameWorlds;
+    List<String> gameWorldsName;
     @Getter
     List<World> slimeWorldsToUnload;
 
+    @Getter
     private File serverFolder;
 
     @Override
@@ -114,63 +114,55 @@ public final class Lepvp extends JavaPlugin {
         pm.registerEvents(new CommonStateListener(arena, plugin), this);
     }
 
-    public void cleanUpMaps() {
-        for (File file : Objects.requireNonNull(serverFolder.listFiles())){
-            if (file.getName().contains(".active.")){
-                Bukkit.getConsoleSender().sendMessage(Colorize.format("&eDeleting map " + file.getName()));
-                Bukkit.unloadWorld(file.getName(), false);
-                FileUtil.delete(file);
-            }
-        }
-    }
-    public void cleanUpArenas() {
-        if (getArenaManager().getDupArenaList() != null) {
-            for (Arena arena : getArenaManager().getDupArenaList()) {
-                Bukkit.getConsoleSender().sendMessage(Colorize.format("&eDeleting arena " + arena.getDisplayName()));
-                getArenaManager().deleteDupeArenaItself(arena);
-            }
-        }
-    }
-
     public void doSlimeStuff() {
         List<Arena> toAdd = new ArrayList<>();
 
         for (Arena arena : getArenaManager().getSourceArenaList()) {
-            World world = new WorldCreator(arena.getDisplayName()).createWorld();
-            gameWorlds.add(world);
-            if (world != null) Bukkit.unloadWorld(world, false);
-        }
-        Bukkit.getScheduler().runTaskLater(this, () -> {
-            for (World w : gameWorlds) {
-                SlimeUtil.importWorld(w.getName(), new File(serverFolder + File.separator + w.getName()), this);
+            try{
+                if (!slime.getLoader("file").worldExists(arena.getDisplayName())){
+                    Bukkit.getLogger().log(Level.INFO, "Attempting to load arena world: " + arena.getDisplayName());
+
+                    SlimeUtil.importWorld(arena.getDisplayName().toLowerCase(), new File(serverFolder + File.separator + arena.getDisplayName().toLowerCase()), this);
+                    Bukkit.getLogger().log(Level.INFO, "importing world " + arena.getDisplayName().toLowerCase());
+
+                    Bukkit.getScheduler().runTaskLater(this, () -> {
+                        SlimeUtil.loadWorld(arena.getDisplayName().toLowerCase(), this);
+                        gameWorldsName.add(arena.getDisplayName().toLowerCase());
+
+                        Bukkit.getLogger().log(Level.INFO, "loading world " + arena.getDisplayName().toLowerCase());
+                    }, 20*3);
+                }else{
+                    SlimeUtil.loadWorld(arena.getDisplayName().toLowerCase(), this);
+                    gameWorldsName.add(arena.getDisplayName().toLowerCase());
+
+                    Bukkit.getLogger().log(Level.INFO, "loading world " + arena.getDisplayName().toLowerCase());
+                }
+                Bukkit.getConsoleSender().sendMessage(Colorize.format("&aSuccessfully loaded " + arena.getDisplayName().toLowerCase()));
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
             Bukkit.getScheduler().runTaskLater(this, () -> {
-                for (World w : gameWorlds){
-                    SlimeUtil.loadWorld(w.getName(), this);
-                }
-                Bukkit.getScheduler().runTaskLater(this, () -> {
-                    for (Arena arena : getArenaManager().getSourceArenaList()) {
-                        String arenaName = arena.getDisplayName();
-                        for (World w : gameWorlds) {
-                            if (arenaName.equalsIgnoreCase(w.getName())){
-                                Location newArenaLocationOne = new Location(w, arena.getSpawnLocationOne().getX(), arena.getSpawnLocationOne().getY(), arena.getSpawnLocationOne().getZ(), arena.getSpawnLocationOne().getYaw(), arena.getSpawnLocationOne().getPitch());
-                                Location newArenaLocationTwo = new Location(w, arena.getSpawnLocationTwo().getX(), arena.getSpawnLocationTwo().getY(), arena.getSpawnLocationTwo().getZ(), arena.getSpawnLocationTwo().getYaw(), arena.getSpawnLocationTwo().getPitch());
+                for (Arena arena1 : getArenaManager().getSourceArenaList()) {
+                    String arenaName = arena1.getDisplayName().toLowerCase();
+                    for (String w : gameWorldsName) {
+                        if (arenaName.equalsIgnoreCase(w)){
+                            Location newArenaLocationOne = new Location(Bukkit.getWorld(w), arena1.getSpawnLocationOne().getX(), arena1.getSpawnLocationOne().getY(), arena1.getSpawnLocationOne().getZ(), arena1.getSpawnLocationOne().getYaw(), arena1.getSpawnLocationOne().getPitch());
+                            Location newArenaLocationTwo = new Location(Bukkit.getWorld(w), arena1.getSpawnLocationTwo().getX(), arena1.getSpawnLocationTwo().getY(), arena1.getSpawnLocationTwo().getZ(), arena1.getSpawnLocationTwo().getYaw(), arena1.getSpawnLocationTwo().getPitch());
 
-                                newArena = new Arena(w.getName(), w.getName().toUpperCase(), newArenaLocationOne, newArenaLocationTwo, new WaitingArenaState(), new ArrayList<>());
-                                toAdd.add(newArena);
-                                slimeWorldsToUnload.add(w);
-                                Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "ADDED SLIME MAP " + w.getName());
-                            }
+                            Arena newArena = new Arena(w, w.toUpperCase(), newArenaLocationOne, newArenaLocationTwo, new WaitingArenaState(), new ArrayList<>());
+                            toAdd.add(newArena);
+                            slimeWorldsToUnload.add(Bukkit.getWorld(w));
+                            Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "ADDED SLIME MAP " + w);
                         }
                     }
-                    for (Arena a : toAdd) {
-                        plugin.getArenaManager().getDupArenaList().add(a);
-                        getArenaManager().setArenaStatus(ArenaStatus.READY);
-                        Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "LOADED SLIME MAP " + a.getDisplayName());
-                    }
-                }, 20*3);
-            }, 20*3);
-        }, 20*3);
+                }
+                for (Arena a : toAdd) {
+                    plugin.getArenaManager().getDupArenaList().add(a);
+                    getArenaManager().setArenaStatus(ArenaStatus.READY);
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "LOADED SLIME MAP " + a.getDisplayName());
+                }
+            }, 20*10);
+        }
     }
 
     public void doMapStuff() {
@@ -178,15 +170,15 @@ public final class Lepvp extends JavaPlugin {
         List<Arena> toAdd = new ArrayList<>();
 
         for (Arena arena1 : plugin.getArenaManager().getSourceArenaList()) {
-            String arena1Name = arena1.getDisplayName();
-            File mapToReset = new File(arena1.getDisplayName());
+            String arena1Name = arena1.getDisplayName().toLowerCase();
+            File mapToReset = new File(arena1.getDisplayName().toLowerCase());
             if (mapToReset.exists()){
                 map = new LocalGameMap(serverFolder, arena1Name, true);
 
                 Location newArenaSpawnLocationOne = new Location(map.getWorld(), arena1.getSpawnLocationOne().getX(), arena1.getSpawnLocationOne().getY(), arena1.getSpawnLocationOne().getZ(), arena1.getSpawnLocationOne().getYaw(), arena1.getSpawnLocationOne().getPitch());
                 Location newArenaSpawnLocationTwo = new Location(map.getWorld(), arena1.getSpawnLocationTwo().getX(), arena1.getSpawnLocationTwo().getY(), arena1.getSpawnLocationTwo().getZ(), arena1.getSpawnLocationTwo().getYaw(), arena1.getSpawnLocationTwo().getPitch());
 
-                newArena = new Arena(map.getWorld().getName(), map.getWorld().getName().toUpperCase(), newArenaSpawnLocationOne, newArenaSpawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
+                Arena newArena = new Arena(map.getWorld().getName(), map.getWorld().getName().toUpperCase(), newArenaSpawnLocationOne, newArenaSpawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
                 toAdd.add(newArena);
                 Bukkit.getLogger().info(Colorize.format("&aEVERYTHING LOADED IN PROPERLY (THE MAPS)"));
             }
@@ -206,7 +198,7 @@ public final class Lepvp extends JavaPlugin {
         if (doesSWMExist()) {
             slime = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
         }
-        gameWorlds = new ArrayList<>();
+        gameWorldsName = new ArrayList<>();
         slimeWorldsToUnload = new ArrayList<>();
     }
 
@@ -215,6 +207,25 @@ public final class Lepvp extends JavaPlugin {
             return true;
         }
         return false;
+    }
+
+    public void cleanUpMaps() {
+        for (File file : Objects.requireNonNull(serverFolder.listFiles())){
+            if (file.getName().contains(".active.")){
+                Bukkit.getConsoleSender().sendMessage(Colorize.format("&eDeleting map " + file.getName()));
+                Bukkit.unloadWorld(file.getName(), false);
+                FileUtil.delete(file);
+            }
+        }
+    }
+
+    public void cleanUpArenas() {
+        if (getArenaManager().getDupArenaList() != null) {
+            for (Arena arena : getArenaManager().getDupArenaList()) {
+                Bukkit.getConsoleSender().sendMessage(Colorize.format("&eDeleting arena " + arena.getDisplayName()));
+                getArenaManager().deleteDupeArenaItself(arena);
+            }
+        }
     }
 
     public void initItems() {
