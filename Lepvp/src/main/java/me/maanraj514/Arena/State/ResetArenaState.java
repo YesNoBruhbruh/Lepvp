@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class ResetArenaState extends ArenaState{
@@ -26,8 +27,6 @@ public class ResetArenaState extends ArenaState{
     @Override
     public void onEnable(Lepvp plugin) {
         super.onEnable(plugin);
-
-        System.out.println(plugin.getArenaManager().getDupArenaList());
 
         plugin.getArenaManager().setArenaStatus(ArenaStatus.WAITING);
 
@@ -43,6 +42,11 @@ public class ResetArenaState extends ArenaState{
 
             bukkitPlayer.setHealth(bukkitPlayer.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
             plugin.getArenaManager().getRollBackManager().restore(bukkitPlayer, plugin);
+        }
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player.getWorld().getName().equalsIgnoreCase(arenaWorldName)){
+                player.teleportAsync(Objects.requireNonNull(Bukkit.getWorld("world")).getSpawnLocation());
+            }
         }
         if (plugin.doesSWMExist()){
             SlimeLoader slimeLoader = plugin.getSlime().getLoader("file");

@@ -44,7 +44,7 @@ public class ActiveGameState extends ArenaState {
                 player.teleportAsync(getArena().getSpawnLocationOne());
                 lastSpawnId = 1;
             } else {
-                player.teleportAsync(getArena().getSpawnLocationOne());
+                player.teleportAsync(getArena().getSpawnLocationTwo());
                 lastSpawnId = 0;
             }
 
