@@ -4,19 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="53f337fd-b7b7-469f-ab8b-8b89b375c576" name="Changes" comment="started trying to rewrite">
+    <list default="true" id="53f337fd-b7b7-469f-ab8b-8b89b375c576" name="Changes" comment="slime reset system rewrite works!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ItemStacks/Crossbowweapon.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ItemStacks/Crossbowweapon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ItemStacks/NetheriteBoots.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ItemStacks/NetheriteBoots.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ItemStacks/NetheriteChestplate.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ItemStacks/NetheriteChestplate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ItemStacks/NetheriteHelmet.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ItemStacks/NetheriteHelmet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ItemStacks/NetheriteLeggings.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ItemStacks/NetheriteLeggings.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ItemStacks/NetheritePickaxe.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ItemStacks/NetheritePickaxe.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ItemStacks/NetheriteSword.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ItemStacks/NetheriteSword.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ActiveGameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ActiveGameState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ResetArenaState.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ResetArenaState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Lepvp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Lepvp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/commands/DuelCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/commands/DuelCommand.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -213,7 +204,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653544228018</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="slime reset system rewrite works!">
+      <created>1653561750949</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1653561750949</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -246,6 +244,7 @@
     <MESSAGE value="another commit" />
     <MESSAGE value="attempting to rewrite slime reset system" />
     <MESSAGE value="started trying to rewrite" />
-    <option name="LAST_COMMIT_MESSAGE" value="started trying to rewrite" />
+    <MESSAGE value="slime reset system rewrite works!" />
+    <option name="LAST_COMMIT_MESSAGE" value="slime reset system rewrite works!" />
   </component>
 </project>

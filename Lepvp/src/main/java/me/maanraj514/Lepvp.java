@@ -85,7 +85,14 @@ public final class Lepvp extends JavaPlugin {
     public void onDisable() {
         super.onDisable();
         if (doesSWMExist()) {
-
+            for (Arena arena : getArenaManager().getSourceArenaList()) {
+                for (World world : Bukkit.getWorlds()) {
+                    if (world.getName().contains(arena.getDisplayName())){
+                        Bukkit.getConsoleSender().sendMessage(Colorize.format("&aUnloading " + world.getName()));
+                        SlimeUtil.unloadWorld(world.getName());
+                    }
+                }
+            }
         }else{
             cleanUpMaps();
             cleanUpArenas();

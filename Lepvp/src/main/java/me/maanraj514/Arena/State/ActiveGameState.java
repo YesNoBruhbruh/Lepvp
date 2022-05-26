@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -67,8 +68,16 @@ public class ActiveGameState extends ArenaState {
                 getArena().sendMessage("&cNo alive players? Game Over anyway");
             }
 
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> getArena().setState(new ResetArenaState(), plugin), 20 * 10);
+            plugin.getServer().getScheduler().runTaskLater(plugin, () -> getArena().setState(new ResetArenaState(), plugin), 20 * 7);
         }, 0, 4);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onDeath(EntityDeathEvent event){
+        if (!(event.getEntity() instanceof Player player)) return;
+        if (!getArena().isPlayer(player)) return;
+
+        event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -103,8 +112,6 @@ public class ActiveGameState extends ArenaState {
     private void onDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         if (!getArena().isPlayer(player)) return;
-
-        player.spigot().respawn();
 
         alivePlayers.remove(player.getUniqueId());
 
