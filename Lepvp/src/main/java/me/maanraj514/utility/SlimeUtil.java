@@ -14,9 +14,11 @@ import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 @UtilityClass
 public class SlimeUtil {
+    private final Random random = new Random();
 
     public void importWorld(String worldName, File worldDir, Lepvp plugin) {
         SlimeLoader loader = plugin.getSlime().getLoader("file");
@@ -29,17 +31,17 @@ public class SlimeUtil {
         }
     }
 
-    public void loadWorld(String worldName, Lepvp plugin) {
-        SlimeLoader loader = plugin.getSlime().getLoader("file");
-
+    public void loadWorld(String worldName, String newWorldName, Lepvp plugin) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
+                SlimeLoader loader = plugin.getSlime().getLoader("file");
                 SlimePropertyMap spm = new SlimePropertyMap();
+
                 spm.setValue(SlimeProperties.DIFFICULTY, "hard");
                 spm.setValue(SlimeProperties.ALLOW_ANIMALS, false);
                 spm.setValue(SlimeProperties.ALLOW_MONSTERS, false);
 
-                SlimeWorld slimeWorld = plugin.getSlime().loadWorld(loader, worldName, true, spm);
+                SlimeWorld slimeWorld = plugin.getSlime().loadWorld(loader, worldName, true, spm).clone(newWorldName);
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     plugin.getSlime().generateWorld(slimeWorld);
                 });

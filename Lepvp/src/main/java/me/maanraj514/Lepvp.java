@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.logging.Level;
 
 
@@ -45,8 +46,6 @@ public final class Lepvp extends JavaPlugin {
 
     @Getter
     List<String> gameWorldsName;
-    @Getter
-    List<World> slimeWorldsToUnload;
 
     @Getter
     private File serverFolder;
@@ -118,44 +117,53 @@ public final class Lepvp extends JavaPlugin {
         List<Arena> toAdd = new ArrayList<>();
 
         for (Arena arena : getArenaManager().getSourceArenaList()) {
-            try{
-                if (!slime.getLoader("file").worldExists(arena.getDisplayName())){
-                    Bukkit.getLogger().log(Level.INFO, "Attempting to load arena world: " + arena.getDisplayName());
 
+            Random random = new Random();
+            int result = random.nextInt(9999)+1;
+            String name = "mini" + result;
+
+            try{
+                if (!slime.getLoader("file").worldExists(arena.getDisplayName().toLowerCase())){
                     SlimeUtil.importWorld(arena.getDisplayName().toLowerCase(), new File(serverFolder + File.separator + arena.getDisplayName().toLowerCase()), this);
-                    Bukkit.getLogger().log(Level.INFO, "importing world " + arena.getDisplayName().toLowerCase());
 
                     Bukkit.getScheduler().runTaskLater(this, () -> {
-                        SlimeUtil.loadWorld(arena.getDisplayName().toLowerCase(), this);
-                        gameWorldsName.add(arena.getDisplayName().toLowerCase());
+                        SlimeUtil.loadWorld(arena.getDisplayName().toLowerCase(), name, this);
+                        gameWorldsName.add(name);
+
+                        Location newArenaLocationOne = new Location(Bukkit.getWorld(name), arena.getSpawnLocationOne().getX(), arena.getSpawnLocationOne().getY(), arena.getSpawnLocationOne().getZ(), arena.getSpawnLocationOne().getYaw(), arena.getSpawnLocationOne().getPitch());
+                        Location newArenaLocationTwo = new Location(Bukkit.getWorld(name), arena.getSpawnLocationTwo().getX(), arena.getSpawnLocationTwo().getY(), arena.getSpawnLocationTwo().getZ(), arena.getSpawnLocationTwo().getYaw(), arena.getSpawnLocationTwo().getPitch());
+                        addArena(toAdd, newArenaLocationOne, newArenaLocationTwo);
+
+                        System.out.println("test1");
                     }, 20*3);
                 }else{
-                    SlimeUtil.loadWorld(arena.getDisplayName().toLowerCase(), this);
-                    gameWorldsName.add(arena.getDisplayName().toLowerCase());
+                    Location newArenaLocationOne = new Location(Bukkit.getWorld(name), arena.getSpawnLocationOne().getX(), arena.getSpawnLocationOne().getY(), arena.getSpawnLocationOne().getZ(), arena.getSpawnLocationOne().getYaw(), arena.getSpawnLocationOne().getPitch());
+                    Location newArenaLocationTwo = new Location(Bukkit.getWorld(name), arena.getSpawnLocationTwo().getX(), arena.getSpawnLocationTwo().getY(), arena.getSpawnLocationTwo().getZ(), arena.getSpawnLocationTwo().getYaw(), arena.getSpawnLocationTwo().getPitch());
+                    SlimeUtil.loadWorld(arena.getDisplayName().toLowerCase(), name, this);
+                    gameWorldsName.add(name);
+                    addArena(toAdd, newArenaLocationOne, newArenaLocationTwo);
+
+                    System.out.println("test2");
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            Bukkit.getScheduler().runTaskLater(this, () -> {
-                for (Arena arena1 : getArenaManager().getSourceArenaList()) {
-                    String arenaName = arena1.getDisplayName().toLowerCase();
-                    for (String w : gameWorldsName) {
-                        if (arenaName.equalsIgnoreCase(w)){
-                            Location newArenaLocationOne = new Location(Bukkit.getWorld(w), arena1.getSpawnLocationOne().getX(), arena1.getSpawnLocationOne().getY(), arena1.getSpawnLocationOne().getZ(), arena1.getSpawnLocationOne().getYaw(), arena1.getSpawnLocationOne().getPitch());
-                            Location newArenaLocationTwo = new Location(Bukkit.getWorld(w), arena1.getSpawnLocationTwo().getX(), arena1.getSpawnLocationTwo().getY(), arena1.getSpawnLocationTwo().getZ(), arena1.getSpawnLocationTwo().getYaw(), arena1.getSpawnLocationTwo().getPitch());
-
-                            Arena newArena = new Arena(w, w.toUpperCase(), newArenaLocationOne, newArenaLocationTwo, new WaitingArenaState(), new ArrayList<>());
-                            toAdd.add(newArena);
-                            slimeWorldsToUnload.add(Bukkit.getWorld(w));
-                        }
-                    }
-                }
-                for (Arena a : toAdd) {
-                    plugin.getArenaManager().getDupArenaList().add(a);
-                    getArenaManager().setArenaStatus(ArenaStatus.READY);
-                }
-            }, 20*10);
         }
+    }
+
+    private void addArena(List<Arena> toAdd, Location newArenaLocationOne, Location newArenaLocationTwo) {
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            for (String w : gameWorldsName) {
+                if (Bukkit.getWorld(w) != null) {
+                    Arena newArena = new Arena(w, w.toUpperCase(), newArenaLocationOne, newArenaLocationTwo, new WaitingArenaState(), new ArrayList<>());
+                    toAdd.add(newArena);
+                }
+            }
+            for (Arena a : toAdd) {
+                plugin.getArenaManager().getDupArenaList().add(a);
+                getArenaManager().setArenaStatus(ArenaStatus.READY);
+            }
+        }, 20*10);
     }
 
     public void doMapStuff() {
@@ -192,7 +200,6 @@ public final class Lepvp extends JavaPlugin {
             slime = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
         }
         gameWorldsName = new ArrayList<>();
-        slimeWorldsToUnload = new ArrayList<>();
     }
 
     public boolean doesSWMExist() {

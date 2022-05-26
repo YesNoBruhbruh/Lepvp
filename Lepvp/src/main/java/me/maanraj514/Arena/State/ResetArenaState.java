@@ -17,10 +17,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class ResetArenaState extends ArenaState{
 
@@ -50,6 +47,11 @@ public class ResetArenaState extends ArenaState{
         }
         if (plugin.doesSWMExist()){
             SlimeLoader slimeLoader = plugin.getSlime().getLoader("file");
+
+            Random random = new Random();
+            int result = random.nextInt(9999)+1;
+            String name = "mini" + result;
+
             try{
                 if (slimeLoader.worldExists(arenaWorldName)) {
                     if (Bukkit.getWorld(arenaWorldName) != null) {
@@ -58,7 +60,7 @@ public class ResetArenaState extends ArenaState{
                             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "TRIGGERED UNLOAD METHOD");
 
                             Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                                SlimeUtil.loadWorld(arenaWorldName, plugin);
+                                SlimeUtil.loadWorld(arenaWorldName, name, plugin);
                                 Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "TRIGGERED LOAD METHOD");
 
                                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
