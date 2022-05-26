@@ -230,7 +230,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653567136605</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="probably final commit unless there are bugs also gonna merge with main branch">
+      <created>1653567416588</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1653567416588</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
