@@ -128,16 +128,11 @@ public final class Lepvp extends JavaPlugin {
                     Bukkit.getScheduler().runTaskLater(this, () -> {
                         SlimeUtil.loadWorld(arena.getDisplayName().toLowerCase(), this);
                         gameWorldsName.add(arena.getDisplayName().toLowerCase());
-
-                        Bukkit.getLogger().log(Level.INFO, "loading world " + arena.getDisplayName().toLowerCase());
                     }, 20*3);
                 }else{
                     SlimeUtil.loadWorld(arena.getDisplayName().toLowerCase(), this);
                     gameWorldsName.add(arena.getDisplayName().toLowerCase());
-
-                    Bukkit.getLogger().log(Level.INFO, "loading world " + arena.getDisplayName().toLowerCase());
                 }
-                Bukkit.getConsoleSender().sendMessage(Colorize.format("&aSuccessfully loaded " + arena.getDisplayName().toLowerCase()));
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -152,14 +147,12 @@ public final class Lepvp extends JavaPlugin {
                             Arena newArena = new Arena(w, w.toUpperCase(), newArenaLocationOne, newArenaLocationTwo, new WaitingArenaState(), new ArrayList<>());
                             toAdd.add(newArena);
                             slimeWorldsToUnload.add(Bukkit.getWorld(w));
-                            Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "ADDED SLIME MAP " + w);
                         }
                     }
                 }
                 for (Arena a : toAdd) {
                     plugin.getArenaManager().getDupArenaList().add(a);
                     getArenaManager().setArenaStatus(ArenaStatus.READY);
-                    Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "LOADED SLIME MAP " + a.getDisplayName());
                 }
             }, 20*10);
         }

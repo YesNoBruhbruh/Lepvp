@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="53f337fd-b7b7-469f-ab8b-8b89b375c576" name="Changes" comment="finally made slime and vanilla reset systems work! have fun playing with the plugin!&#10;probably final commit of lepvp :)">
+    <list default="true" id="53f337fd-b7b7-469f-ab8b-8b89b375c576" name="Changes" comment="another commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ActiveGameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ActiveGameState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ResetArenaState.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ResetArenaState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Lepvp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Lepvp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +184,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653458243197</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="another commit">
+      <created>1653463164686</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1653463164686</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -213,6 +221,7 @@
     <MESSAGE value="just did some stuff, still havent fixed slime reset system" />
     <MESSAGE value="redid whole reset state system because I found out that getArena() method actually got the current arena the thing was on lol my bad" />
     <MESSAGE value="finally made slime and vanilla reset systems work! have fun playing with the plugin!&#10;probably final commit of lepvp :)" />
-    <option name="LAST_COMMIT_MESSAGE" value="finally made slime and vanilla reset systems work! have fun playing with the plugin!&#10;probably final commit of lepvp :)" />
+    <MESSAGE value="another commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="another commit" />
   </component>
 </project>

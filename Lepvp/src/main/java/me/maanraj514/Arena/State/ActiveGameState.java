@@ -129,15 +129,13 @@ public class ActiveGameState extends ArenaState {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamage(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player)) return;
-        Player player = (Player) event.getEntity();
+        if (!(event.getEntity() instanceof Player player)) return;
         if (!getArena().isPlayer(player)) return;
 
         if (isOver) {
             event.setCancelled(true);
             return;
         }
-
         event.setCancelled(false);
 
         if (player.getHealth() - event.getFinalDamage() <= 0 && !(player.getInventory().getItemInOffHand().getType() == Material.TOTEM_OF_UNDYING || player.getInventory().getItemInMainHand().getType() == Material.TOTEM_OF_UNDYING)) {
@@ -145,7 +143,9 @@ public class ActiveGameState extends ArenaState {
             player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
             player.setGameMode(GameMode.SPECTATOR);
             getArena().sendMessage("&a" + player.getDisplayName() + " died!");
+            player.spigot().respawn();
         }
+        player.spigot().respawn();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

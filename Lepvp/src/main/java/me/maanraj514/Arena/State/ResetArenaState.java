@@ -69,7 +69,8 @@ public class ResetArenaState extends ArenaState{
                                     arenasToAdd.add(arena1);
                                     plugin.getArenaManager().addArenaToDupArenaList(arena1);
                                     plugin.getArenaManager().deleteDupeArenaItself(getArena());
-                                }, 20*3);
+                                    Bukkit.getConsoleSender().sendMessage(Colorize.format("&aREGISTEERD THE RESETTED ARENA"));
+                                }, 20*5);
                             }, 20*3);
                         }, 20*2);
                     }
