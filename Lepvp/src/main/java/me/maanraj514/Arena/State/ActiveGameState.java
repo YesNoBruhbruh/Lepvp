@@ -47,63 +47,7 @@ public class ActiveGameState extends ArenaState {
                 player.teleportAsync(getArena().getSpawnLocationTwo());
                 lastSpawnId = 0;
             }
-
-            player.getInventory().setHelmet(NetheriteHelmet.NetheriteHelmet);
-            player.getInventory().setChestplate(NetheriteChestplate.NetheriteChestplate);
-            player.getInventory().setLeggings(NetheriteLeggings.NetheriteLeggings);
-            player.getInventory().setBoots(NetheriteBoots.NetheriteBoots);
-
-            player.getInventory().setItemInOffHand(new ItemStack(Material.TOTEM_OF_UNDYING));
-            player.getInventory().setItem(0, NetheriteSword.NetheriteSword);
-            player.getInventory().setItem(1, new ItemStack(Material.ENDER_PEARL, 16));
-            player.getInventory().setItem(4, new ItemStack(Material.GOLDEN_APPLE, 64));
-            player.getInventory().setItem(2, new ItemStack(Material.OBSIDIAN, 64));
-            player.getInventory().setItem(3, new ItemStack(Material.END_CRYSTAL, 64));
-            player.getInventory().setItem(5, Crossbowweapon.Crossbow);
-            player.getInventory().setItem(6, new ItemStack(Material.TOTEM_OF_UNDYING));
-            Potion speed = new Potion(PotionType.SPEED, 2);
-            speed.setSplash(true);
-            ItemStack item = speed.toItemStack(1);
-            player.getInventory().setItem(7, item);
-            ItemStack result = new ItemStack(Material.TIPPED_ARROW, 64);
-            PotionMeta resultMeta = (PotionMeta) result.getItemMeta();
-            resultMeta.setBasePotionData(new PotionData(PotionType.SLOW_FALLING));
-            resultMeta.addCustomEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 5, 1), true);
-            result.setItemMeta(resultMeta);
-            Potion strength = new Potion(PotionType.STRENGTH, 2);
-            strength.setSplash(true);
-            ItemStack strengthItem = strength.toItemStack(1);
-            player.getInventory().setItem(8, strengthItem);
-            player.getInventory().setItem(9, result);
-            player.getInventory().setItem(10, new ItemStack(Material.EXPERIENCE_BOTTLE, 64));
-            player.getInventory().setItem(11, NetheritePickaxe.NetheritePickaxe);
-            player.getInventory().setItem(12, item);
-            player.getInventory().setItem(13, item);
-            player.getInventory().setItem(14, item);
-            player.getInventory().setItem(15, item);
-            player.getInventory().setItem(16, item);
-            player.getInventory().setItem(17, item);
-            player.getInventory().setItem(18, new ItemStack(Material.ENDER_PEARL, 16));
-            player.getInventory().setItem(19, new ItemStack(Material.ENDER_PEARL, 16));
-            player.getInventory().setItem(20, new ItemStack(Material.TOTEM_OF_UNDYING));
-            player.getInventory().setItem(21, strengthItem);
-            player.getInventory().setItem(22, strengthItem);
-            player.getInventory().setItem(23, strengthItem);
-            player.getInventory().setItem(24, strengthItem);
-            player.getInventory().setItem(25, strengthItem);
-            player.getInventory().setItem(26, strengthItem);
-            player.getInventory().setItem(27, new ItemStack(Material.ENDER_PEARL, 16));
-            player.getInventory().setItem(28, new ItemStack(Material.ENDER_PEARL, 16));
-            player.getInventory().setItem(29, new ItemStack(Material.TOTEM_OF_UNDYING));
-            player.getInventory().setItem(30, item);
-            player.getInventory().setItem(31, strengthItem);
-            player.getInventory().setItem(32, item);
-            player.getInventory().setItem(33, strengthItem);
-            Potion turtle = new Potion(PotionType.TURTLE_MASTER, 2);
-            turtle.setSplash(true);
-            ItemStack turtleItem = turtle.toItemStack(1);
-            player.getInventory().setItem(34, turtleItem);
-            player.getInventory().setItem(35, turtleItem);
+            addItems(player);
         }
 
         plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
@@ -160,6 +104,8 @@ public class ActiveGameState extends ArenaState {
         Player player = event.getEntity();
         if (!getArena().isPlayer(player)) return;
 
+        player.spigot().respawn();
+
         alivePlayers.remove(player.getUniqueId());
 
         player.getInventory().clear();
@@ -167,5 +113,59 @@ public class ActiveGameState extends ArenaState {
 
         player.setLevel(0);
         player.setExp(0);
+    }
+
+    private void addItems(Player player) {
+        // Armour
+        player.getInventory().setHelmet(NetheriteHelmet.NetheriteHelmet);
+        player.getInventory().setChestplate(NetheriteChestplate.NetheriteChestplate);
+        player.getInventory().setLeggings(NetheriteLeggings.NetheriteLeggings);
+        player.getInventory().setBoots(NetheriteBoots.NetheriteBoots);
+
+        // Main inventory
+        player.getInventory().setItemInOffHand(new ItemStack(Material.TOTEM_OF_UNDYING));
+        player.getInventory().setItem(0, NetheriteSword.NetheriteSword);
+        player.getInventory().setItem(1, new ItemStack(Material.END_CRYSTAL, 64));
+        player.getInventory().setItem(2, new ItemStack(Material.OBSIDIAN, 64));
+        player.getInventory().setItem(3, new ItemStack(Material.RESPAWN_ANCHOR, 64));
+        player.getInventory().setItem(4, new ItemStack(Material.GLOWSTONE, 64));
+        player.getInventory().setItem(5, new ItemStack(Material.ENDER_CHEST, 64));
+        player.getInventory().setItem(6, new ItemStack(Material.ENDER_PEARL, 17));
+        player.getInventory().setItem(7, new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 64));
+        player.getInventory().setItem(8, new ItemStack(Material.OBSIDIAN, 64));
+
+        // Rest of Inventory
+        // first row
+        player.getInventory().setItem(9, new ItemStack(Material.END_CRYSTAL, 64));
+        player.getInventory().setItem(10, new ItemStack(Material.END_CRYSTAL, 64));
+        player.getInventory().setItem(11, new ItemStack(Material.OBSIDIAN, 64));
+        player.getInventory().setItem(12, new ItemStack(Material.GLOWSTONE, 64));
+        player.getInventory().setItem(13, NetheritePickaxe.NetheritePickaxe);
+        player.getInventory().setItem(14, new ItemStack(Material.TOTEM_OF_UNDYING));
+        player.getInventory().setItem(15, new ItemStack(Material.TOTEM_OF_UNDYING));
+        player.getInventory().setItem(16, new ItemStack(Material.TOTEM_OF_UNDYING));
+        player.getInventory().setItem(17, new ItemStack(Material.EXPERIENCE_BOTTLE, 64));
+
+        // second row
+        player.getInventory().setItem(18, new ItemStack(Material.END_CRYSTAL, 64));
+        player.getInventory().setItem(19, new ItemStack(Material.END_CRYSTAL, 64));
+        player.getInventory().setItem(20, new ItemStack(Material.OBSIDIAN, 64));
+        player.getInventory().setItem(21, new ItemStack(Material.RESPAWN_ANCHOR, 64));
+        player.getInventory().setItem(22, new ItemStack(Material.TOTEM_OF_UNDYING));
+        player.getInventory().setItem(23, new ItemStack(Material.TOTEM_OF_UNDYING));
+        player.getInventory().setItem(24, new ItemStack(Material.TOTEM_OF_UNDYING));
+        player.getInventory().setItem(25, new ItemStack(Material.TOTEM_OF_UNDYING));
+        player.getInventory().setItem(26, new ItemStack(Material.EXPERIENCE_BOTTLE, 64));
+
+        // third row
+        player.getInventory().setItem(27, new ItemStack(Material.END_CRYSTAL, 64));
+        player.getInventory().setItem(28, new ItemStack(Material.END_CRYSTAL, 64));
+        player.getInventory().setItem(29, new ItemStack(Material.OBSIDIAN, 64));
+        player.getInventory().setItem(30, new ItemStack(Material.TOTEM_OF_UNDYING));
+        player.getInventory().setItem(31, new ItemStack(Material.TOTEM_OF_UNDYING));
+        player.getInventory().setItem(32, new ItemStack(Material.TOTEM_OF_UNDYING));
+        player.getInventory().setItem(33, new ItemStack(Material.TOTEM_OF_UNDYING));
+        player.getInventory().setItem(34, new ItemStack(Material.TOTEM_OF_UNDYING));
+        player.getInventory().setItem(35, new ItemStack(Material.ENDER_PEARL, 16));
     }
 }

@@ -50,40 +50,41 @@ public class ResetArenaState extends ArenaState{
 
             Random random = new Random();
             int result = random.nextInt(9999)+1;
-            String name = "mini" + result;
 
-            try{
-                if (slimeLoader.worldExists(arenaWorldName)) {
-                    if (Bukkit.getWorld(arenaWorldName) != null) {
-                        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                            SlimeUtil.unloadWorld(arenaWorldName);
-                            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "TRIGGERED UNLOAD METHOD");
+            if (Bukkit.getWorld(arenaWorldName) != null) {
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        for (Arena arena : plugin.getArenaManager().getSourceArenaList()) {
+                            String arenaName = arena.getDisplayName().toLowerCase();
+                            if (arenaWorldName.startsWith(arenaName)){
+                                String name = arena.getDisplayName().toLowerCase() + "_active_" + result;
 
-                            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                                SlimeUtil.loadWorld(arenaWorldName, name, plugin);
+                                SlimeUtil.loadWorld(arena.getDisplayName().toLowerCase(), name, plugin);
                                 Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "TRIGGERED LOAD METHOD");
 
                                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                                    Location newArenaLocationOne = new Location(Bukkit.getWorld(arenaWorldName), getArena().getSpawnLocationOne().getX(), getArena().getSpawnLocationOne().getY(), getArena().getSpawnLocationOne().getZ(), getArena().getSpawnLocationOne().getYaw(), getArena().getSpawnLocationOne().getPitch());
-                                    Location newArenaLocationTwo = new Location(Bukkit.getWorld(arenaWorldName), getArena().getSpawnLocationTwo().getX(), getArena().getSpawnLocationTwo().getY(), getArena().getSpawnLocationTwo().getZ(), getArena().getSpawnLocationTwo().getYaw(), getArena().getSpawnLocationTwo().getPitch());
+                                    Location newArenaLocationOne = new Location(Bukkit.getWorld(name), arena.getSpawnLocationOne().getX(), arena.getSpawnLocationOne().getY(), arena.getSpawnLocationOne().getZ(), arena.getSpawnLocationOne().getYaw(), arena.getSpawnLocationOne().getPitch());
+                                    Location newArenaLocationTwo = new Location(Bukkit.getWorld(name), arena.getSpawnLocationTwo().getX(), arena.getSpawnLocationTwo().getY(), arena.getSpawnLocationTwo().getZ(), arena.getSpawnLocationTwo().getYaw(), arena.getSpawnLocationTwo().getPitch());
 
-                                    Arena arena1 = new Arena(arenaWorldName, arenaWorldName.toUpperCase(), newArenaLocationOne, newArenaLocationTwo, new WaitingArenaState(), new ArrayList<>());
-                                    arenasToAdd.add(arena1);
+                                    Arena arena1 = new Arena(name, name.toUpperCase(), newArenaLocationOne, newArenaLocationTwo, new WaitingArenaState(), new ArrayList<>());
+
                                     plugin.getArenaManager().addArenaToDupArenaList(arena1);
-                                    plugin.getArenaManager().deleteDupeArenaItself(getArena());
-                                    Bukkit.getConsoleSender().sendMessage(Colorize.format("&aREGISTEERD THE RESETTED ARENA"));
+                                    Bukkit.getConsoleSender().sendMessage(Colorize.format("&aNew arena name is " + name + " &ecloned from " + arena.getConfigName()));
+
+                                    plugin.getArenaManager().deleteDupeArenaItself(arena);
+                                    Bukkit.getConsoleSender().sendMessage(Colorize.format("&aREGISTERED THE RESET ARENA"));
                                 }, 20*5);
-                            }, 20*3);
-                        }, 20*2);
-                    }
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
+                            }
+                        }
+                    }, 20);
+                    SlimeUtil.unloadWorld(arenaWorldName);
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "TRIGGERED UNLOAD METHOD");
+                }, 20*2);
             }
         }else{
             for (Arena arena1 : plugin.getArenaManager().getSourceArenaList()) {
                 String arena1Name = arena1.getDisplayName().toLowerCase();
-                System.out.println(arenaWorldName + "" + arena1Name);
+                System.out.println(arenaWorldName + " " + arena1Name);
                 if (arenaWorldName.startsWith(arena1Name)){
                     map = new LocalGameMap(new File(Bukkit.getServer().getWorldContainer().getAbsolutePath()), arena1Name, true);
 

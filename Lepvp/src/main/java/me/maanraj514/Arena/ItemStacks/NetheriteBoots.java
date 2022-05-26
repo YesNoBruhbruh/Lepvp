@@ -21,14 +21,11 @@ public class NetheriteBoots {
         ItemStack item = new ItemStack(Material.NETHERITE_BOOTS);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GOLD + "Netherite Boots");
-        List<String> lore = new ArrayList<>();
-        lore.add("it's just a boots >:)");
         meta.addEnchant(Enchantment.DEPTH_STRIDER, 3, true);
         meta.addEnchant(Enchantment.PROTECTION_FALL, 4, true);
         meta.addEnchant(Enchantment.MENDING, 1, true);
         meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4, true);
         meta.addEnchant(Enchantment.DURABILITY, 3, true);
-        meta.setLore(lore);
         item.setItemMeta(meta);
         NetheriteBoots = item;
     }

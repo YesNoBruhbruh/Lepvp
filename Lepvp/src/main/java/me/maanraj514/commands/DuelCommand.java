@@ -48,6 +48,7 @@ public class DuelCommand implements CommandExecutor {
                     return true;
                 }
 
+                Colorize.sendMessage(player, "&aYou are being sent to " + availableArenas.getDisplayName());
                 availableArenas.addPlayer(player, plugin);
                 break;
             case "quit":

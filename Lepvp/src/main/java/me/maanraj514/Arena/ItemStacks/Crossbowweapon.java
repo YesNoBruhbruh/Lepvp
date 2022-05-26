@@ -21,13 +21,10 @@ public class Crossbowweapon {
         ItemStack item = new ItemStack(Material.CROSSBOW);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GOLD + "Crossbow");
-        List<String> lore = new ArrayList<>();
-        lore.add("it's just a crossbow >:)");
         meta.addEnchant(Enchantment.MENDING, 1, true);
         meta.addEnchant(Enchantment.MULTISHOT, 1, true);
         meta.addEnchant(Enchantment.QUICK_CHARGE, 3, true);
         meta.addEnchant(Enchantment.DURABILITY, 3, true);
-        meta.setLore(lore);
         item.setItemMeta(meta);
         Crossbow = item;
     }

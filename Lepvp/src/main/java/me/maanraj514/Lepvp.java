@@ -45,9 +45,6 @@ public final class Lepvp extends JavaPlugin {
     FileConfiguration config = getConfig();
 
     @Getter
-    List<String> gameWorldsName;
-
-    @Getter
     private File serverFolder;
 
     @Override
@@ -116,54 +113,62 @@ public final class Lepvp extends JavaPlugin {
     public void doSlimeStuff() {
         List<Arena> toAdd = new ArrayList<>();
 
+        // TODO FIX THE ARENA CONFIG NAME STUFF
+        // TODO THE PROBLEM WAS THE ARENAS KEEP DUPLICATING ONTO MULTIPLE MAPS
+
         for (Arena arena : getArenaManager().getSourceArenaList()) {
 
             Random random = new Random();
             int result = random.nextInt(9999)+1;
-            String name = "mini" + result;
 
             try{
                 if (!slime.getLoader("file").worldExists(arena.getDisplayName().toLowerCase())){
                     SlimeUtil.importWorld(arena.getDisplayName().toLowerCase(), new File(serverFolder + File.separator + arena.getDisplayName().toLowerCase()), this);
 
                     Bukkit.getScheduler().runTaskLater(this, () -> {
+                        String name = arena.getDisplayName().toLowerCase() + "_active_" + result;
                         SlimeUtil.loadWorld(arena.getDisplayName().toLowerCase(), name, this);
-                        gameWorldsName.add(name);
 
-                        Location newArenaLocationOne = new Location(Bukkit.getWorld(name), arena.getSpawnLocationOne().getX(), arena.getSpawnLocationOne().getY(), arena.getSpawnLocationOne().getZ(), arena.getSpawnLocationOne().getYaw(), arena.getSpawnLocationOne().getPitch());
-                        Location newArenaLocationTwo = new Location(Bukkit.getWorld(name), arena.getSpawnLocationTwo().getX(), arena.getSpawnLocationTwo().getY(), arena.getSpawnLocationTwo().getZ(), arena.getSpawnLocationTwo().getYaw(), arena.getSpawnLocationTwo().getPitch());
-                        addArena(toAdd, newArenaLocationOne, newArenaLocationTwo);
+                        Bukkit.getScheduler().runTaskLater(this, () -> {
+                            Location newArenaLocationOne = new Location(Bukkit.getWorld(name), arena.getSpawnLocationOne().getX(), arena.getSpawnLocationOne().getY(), arena.getSpawnLocationOne().getZ(), arena.getSpawnLocationOne().getYaw(), arena.getSpawnLocationOne().getPitch());
+                            Location newArenaLocationTwo = new Location(Bukkit.getWorld(name), arena.getSpawnLocationTwo().getX(), arena.getSpawnLocationTwo().getY(), arena.getSpawnLocationTwo().getZ(), arena.getSpawnLocationTwo().getYaw(), arena.getSpawnLocationTwo().getPitch());
 
-                        System.out.println("test1");
+                            if (Bukkit.getWorld(arena.getDisplayName().toLowerCase() + result) != null) {
+                                Arena newArena = new Arena(name, name.toUpperCase(), newArenaLocationOne, newArenaLocationTwo, new WaitingArenaState(), new ArrayList<>());
+                                toAdd.add(newArena);
+                                Bukkit.getConsoleSender().sendMessage(Colorize.format("&aAdded cloned arena " + name + " with config name " + newArena.getConfigName()));
+                            }
+                            for (Arena a : toAdd) {
+                                plugin.getArenaManager().getDupArenaList().add(a);
+                                getArenaManager().setArenaStatus(ArenaStatus.READY);
+                            }
+                        }, 20*3);
                     }, 20*3);
                 }else{
-                    Location newArenaLocationOne = new Location(Bukkit.getWorld(name), arena.getSpawnLocationOne().getX(), arena.getSpawnLocationOne().getY(), arena.getSpawnLocationOne().getZ(), arena.getSpawnLocationOne().getYaw(), arena.getSpawnLocationOne().getPitch());
-                    Location newArenaLocationTwo = new Location(Bukkit.getWorld(name), arena.getSpawnLocationTwo().getX(), arena.getSpawnLocationTwo().getY(), arena.getSpawnLocationTwo().getZ(), arena.getSpawnLocationTwo().getYaw(), arena.getSpawnLocationTwo().getPitch());
-                    SlimeUtil.loadWorld(arena.getDisplayName().toLowerCase(), name, this);
-                    gameWorldsName.add(name);
-                    addArena(toAdd, newArenaLocationOne, newArenaLocationTwo);
+                    String name = arena.getDisplayName().toLowerCase() + "_active_" + result;
 
-                    System.out.println("test2");
+                    SlimeUtil.loadWorld(arena.getDisplayName().toLowerCase(), name, this);
+                    System.out.println(name + " " + arena.getDisplayName());
+
+                    Bukkit.getScheduler().runTaskLater(this, () -> {
+                        Location newArenaLocationOne = new Location(Bukkit.getWorld(name), arena.getSpawnLocationOne().getX(), arena.getSpawnLocationOne().getY(), arena.getSpawnLocationOne().getZ(), arena.getSpawnLocationOne().getYaw(), arena.getSpawnLocationOne().getPitch());
+                        Location newArenaLocationTwo = new Location(Bukkit.getWorld(name), arena.getSpawnLocationTwo().getX(), arena.getSpawnLocationTwo().getY(), arena.getSpawnLocationTwo().getZ(), arena.getSpawnLocationTwo().getYaw(), arena.getSpawnLocationTwo().getPitch());
+
+                        if (Bukkit.getWorld(name) != null) {
+                            Arena newArena = new Arena(name, name.toUpperCase(), newArenaLocationOne, newArenaLocationTwo, new WaitingArenaState(), new ArrayList<>());
+                            toAdd.add(newArena);
+                            Bukkit.getConsoleSender().sendMessage(Colorize.format("&aAdded cloned arena " + name + " with config name " + newArena.getConfigName()));
+                        }
+                        for (Arena a : toAdd) {
+                            plugin.getArenaManager().getDupArenaList().add(a);
+                            getArenaManager().setArenaStatus(ArenaStatus.READY);
+                        }
+                    }, 20*3);
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
-    }
-
-    private void addArena(List<Arena> toAdd, Location newArenaLocationOne, Location newArenaLocationTwo) {
-        Bukkit.getScheduler().runTaskLater(this, () -> {
-            for (String w : gameWorldsName) {
-                if (Bukkit.getWorld(w) != null) {
-                    Arena newArena = new Arena(w, w.toUpperCase(), newArenaLocationOne, newArenaLocationTwo, new WaitingArenaState(), new ArrayList<>());
-                    toAdd.add(newArena);
-                }
-            }
-            for (Arena a : toAdd) {
-                plugin.getArenaManager().getDupArenaList().add(a);
-                getArenaManager().setArenaStatus(ArenaStatus.READY);
-            }
-        }, 20*10);
     }
 
     public void doMapStuff() {
@@ -199,7 +204,6 @@ public final class Lepvp extends JavaPlugin {
         if (doesSWMExist()) {
             slime = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
         }
-        gameWorldsName = new ArrayList<>();
     }
 
     public boolean doesSWMExist() {
