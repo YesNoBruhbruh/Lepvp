@@ -149,7 +149,7 @@ public final class Lepvp extends JavaPlugin {
                                 plugin.getArenaManager().getDupArenaList().add(a);
                                 getArenaManager().setArenaStatus(ArenaStatus.READY);
                             }
-                        }, 20*3);
+                        }, 20*5);
                     }, 20*3);
                 }else{
                     String name = arena.getDisplayName().toLowerCase() + "_active_" + result;

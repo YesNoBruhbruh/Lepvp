@@ -1,9 +1,6 @@
 package me.maanraj514.utility;
 
-import com.grinderwolf.swm.api.exceptions.CorruptedWorldException;
-import com.grinderwolf.swm.api.exceptions.NewerFormatException;
-import com.grinderwolf.swm.api.exceptions.UnknownWorldException;
-import com.grinderwolf.swm.api.exceptions.WorldInUseException;
+import com.grinderwolf.swm.api.exceptions.*;
 import com.grinderwolf.swm.api.loaders.SlimeLoader;
 import com.grinderwolf.swm.api.world.SlimeWorld;
 import com.grinderwolf.swm.api.world.properties.SlimeProperties;
@@ -14,17 +11,22 @@ import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 
 @UtilityClass
 public class SlimeUtil {
-    private final Random random = new Random();
 
     public void importWorld(String worldName, File worldDir, Lepvp plugin) {
         SlimeLoader loader = plugin.getSlime().getLoader("file");
         try{
             if (!loader.worldExists(worldName)){
-                plugin.getSlime().asyncImportWorld(worldDir, worldName, loader);
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                    try{
+                        plugin.getSlime().importWorld(worldDir, worldName, loader);
+                        System.out.println("test");
+                    } catch (WorldAlreadyExistsException | WorldLoadedException | WorldTooBigException | IOException | InvalidWorldException ex){
+                        ex.printStackTrace();
+                    }
+                });
             }
         } catch (IOException ex) {
             ex.printStackTrace();

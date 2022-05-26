@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="53f337fd-b7b7-469f-ab8b-8b89b375c576" name="Changes" comment="slime reset system rewrite works!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Lepvp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Lepvp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/utility/SlimeUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/utility/SlimeUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -217,7 +218,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653566105909</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="slime reset system rewrite works!">
+      <created>1653566414134</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1653566414134</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
