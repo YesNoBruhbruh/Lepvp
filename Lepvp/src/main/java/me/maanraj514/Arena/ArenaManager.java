@@ -46,7 +46,7 @@ public class ArenaManager {
             Location spawnLocationOne = ConfigurationUtility.readLocation(Objects.requireNonNull(section.getConfigurationSection("spawnLocationOne")));
             Location spawnLocationTwo = ConfigurationUtility.readLocation(Objects.requireNonNull(section.getConfigurationSection("spawnLocationTwo")));
 
-            Arena arena = new Arena(arenaConfigName, displayName, spawnLocationOne, spawnLocationTwo, new WaitingArenaState());
+            Arena arena = new Arena(arenaConfigName, displayName, spawnLocationOne, spawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
             this.arenaStatus = ArenaStatus.WAITING;
             this.sourceArenaList.add(arena);
         }

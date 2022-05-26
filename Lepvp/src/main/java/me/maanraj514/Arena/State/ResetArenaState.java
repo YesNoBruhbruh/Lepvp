@@ -66,7 +66,7 @@ public class ResetArenaState extends ArenaState{
                                     Location newArenaLocationOne = new Location(Bukkit.getWorld(name), arena.getSpawnLocationOne().getX(), arena.getSpawnLocationOne().getY(), arena.getSpawnLocationOne().getZ(), arena.getSpawnLocationOne().getYaw(), arena.getSpawnLocationOne().getPitch());
                                     Location newArenaLocationTwo = new Location(Bukkit.getWorld(name), arena.getSpawnLocationTwo().getX(), arena.getSpawnLocationTwo().getY(), arena.getSpawnLocationTwo().getZ(), arena.getSpawnLocationTwo().getYaw(), arena.getSpawnLocationTwo().getPitch());
 
-                                    Arena arena1 = new Arena(name, name.toUpperCase(), newArenaLocationOne, newArenaLocationTwo, new WaitingArenaState());
+                                    Arena arena1 = new Arena(name, name.toUpperCase(), newArenaLocationOne, newArenaLocationTwo, new WaitingArenaState(), new ArrayList<>());
 
                                     plugin.getArenaManager().addArenaToDupArenaList(arena1);
                                     Bukkit.getConsoleSender().sendMessage(Colorize.format("&aNew arena name is " + name + " &ecloned from " + arena.getConfigName()));
@@ -91,7 +91,7 @@ public class ResetArenaState extends ArenaState{
                     Location newArenaSpawnLocationOne = new Location(map.getWorld(), arena1.getSpawnLocationOne().getX(), arena1.getSpawnLocationOne().getY(), arena1.getSpawnLocationOne().getZ(), arena1.getSpawnLocationOne().getYaw(), arena1.getSpawnLocationOne().getPitch());
                     Location newArenaSpawnLocationTwo = new Location(map.getWorld(), arena1.getSpawnLocationTwo().getX(), arena1.getSpawnLocationTwo().getY(), arena1.getSpawnLocationTwo().getZ(), arena1.getSpawnLocationTwo().getYaw(), arena1.getSpawnLocationTwo().getPitch());
 
-                    Arena newArena = new Arena(map.getWorld().getName(), map.getWorld().getName().toUpperCase(), newArenaSpawnLocationOne, newArenaSpawnLocationTwo, new WaitingArenaState());
+                    Arena newArena = new Arena(map.getWorld().getName(), map.getWorld().getName().toUpperCase(), newArenaSpawnLocationOne, newArenaSpawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
                     arenasToAdd.add(newArena);
                     Bukkit.getLogger().info(Colorize.format("&aTHE MAP " + map.getWorld().getName() + " HAS BEEN LOADED"));
                 }

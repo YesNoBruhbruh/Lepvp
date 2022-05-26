@@ -37,12 +37,13 @@ public class Arena {
         this.players = new ArrayList<>();
     }
 
-    public Arena(String displayName, String configName, Location spawnLocationOne, Location spawnLocationTwo, ArenaState arenaState) {
+    public Arena(String displayName, String configName, Location spawnLocationOne, Location spawnLocationTwo, ArenaState arenaState, List<UUID> players) {
         this.displayName = displayName;
         this.configName =configName;
         this.spawnLocationOne = spawnLocationOne;
         this.spawnLocationTwo = spawnLocationTwo;
         this.arenaState = arenaState;
+        this.players = players;
     }
 
     private final int MAX_PLAYERS = 2;
