@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="53f337fd-b7b7-469f-ab8b-8b89b375c576" name="Changes" comment="slime reset system rewrite works!">
+    <list default="true" id="53f337fd-b7b7-469f-ab8b-8b89b375c576" name="Changes" comment="probably final commit unless there are bugs also gonna merge with main branch">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Lepvp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Lepvp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/utility/SlimeUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/utility/SlimeUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -225,7 +223,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653566414134</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="probably final commit unless there are bugs also gonna merge with main branch">
+      <created>1653567136605</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1653567136605</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -259,6 +264,7 @@
     <MESSAGE value="attempting to rewrite slime reset system" />
     <MESSAGE value="started trying to rewrite" />
     <MESSAGE value="slime reset system rewrite works!" />
-    <option name="LAST_COMMIT_MESSAGE" value="slime reset system rewrite works!" />
+    <MESSAGE value="probably final commit unless there are bugs also gonna merge with main branch" />
+    <option name="LAST_COMMIT_MESSAGE" value="probably final commit unless there are bugs also gonna merge with main branch" />
   </component>
 </project>

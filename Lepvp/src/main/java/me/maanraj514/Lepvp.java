@@ -120,9 +120,6 @@ public final class Lepvp extends JavaPlugin {
     public void doSlimeStuff() {
         List<Arena> toAdd = new ArrayList<>();
 
-        // TODO FIX THE ARENA CONFIG NAME STUFF
-        // TODO THE PROBLEM WAS THE ARENAS KEEP DUPLICATING ONTO MULTIPLE MAPS
-
         for (Arena arena : getArenaManager().getSourceArenaList()) {
 
             Random random = new Random();
