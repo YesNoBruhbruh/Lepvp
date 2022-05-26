@@ -34,6 +34,6 @@ public class TemporaryArena {
             return null;
         }
 
-        return new Arena(displayName, configName, spawnLocationOne, spawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
+        return new Arena(displayName, configName, spawnLocationOne, spawnLocationTwo, new WaitingArenaState());
     }
 }

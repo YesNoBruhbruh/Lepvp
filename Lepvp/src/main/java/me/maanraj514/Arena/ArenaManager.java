@@ -46,7 +46,7 @@ public class ArenaManager {
             Location spawnLocationOne = ConfigurationUtility.readLocation(Objects.requireNonNull(section.getConfigurationSection("spawnLocationOne")));
             Location spawnLocationTwo = ConfigurationUtility.readLocation(Objects.requireNonNull(section.getConfigurationSection("spawnLocationTwo")));
 
-            Arena arena = new Arena(arenaConfigName, displayName, spawnLocationOne, spawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
+            Arena arena = new Arena(arenaConfigName, displayName, spawnLocationOne, spawnLocationTwo, new WaitingArenaState());
             this.arenaStatus = ArenaStatus.WAITING;
             this.sourceArenaList.add(arena);
         }
@@ -91,7 +91,7 @@ public class ArenaManager {
 
     public Arena findSpecificDupArena(String specificArenaDisplayName) {
         for (Arena arena : getDupArenaList()) {
-            if (arena.getDisplayName().equalsIgnoreCase(specificArenaDisplayName)){
+            if (arena.getDisplayName().startsWith(specificArenaDisplayName)){
                 return arena;
             }
         }
@@ -109,7 +109,7 @@ public class ArenaManager {
 
     public Arena findSpecificOpenDupArena(String specificOpenArenaDisplayName) {
         for (Arena arena : getDupArenaList()) {
-            if (arena.getDisplayName().equalsIgnoreCase(specificOpenArenaDisplayName) && arena.getArenaState() instanceof WaitingArenaState){
+            if (arena.getDisplayName().startsWith(specificOpenArenaDisplayName) && arena.getArenaState() instanceof WaitingArenaState){
                 return arena;
             }
         }

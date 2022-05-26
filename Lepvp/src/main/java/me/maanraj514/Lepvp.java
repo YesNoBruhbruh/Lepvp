@@ -85,12 +85,10 @@ public final class Lepvp extends JavaPlugin {
     public void onDisable() {
         super.onDisable();
         if (doesSWMExist()) {
-            for (Arena arena : getArenaManager().getSourceArenaList()) {
-                for (World world : Bukkit.getWorlds()) {
-                    if (world.getName().contains(arena.getDisplayName())){
-                        Bukkit.getConsoleSender().sendMessage(Colorize.format("&aUnloading " + world.getName()));
-                        SlimeUtil.unloadWorld(world.getName());
-                    }
+            for (World world : Bukkit.getWorlds()) {
+                if (world.getName().contains("_active_")) {
+                    Bukkit.getConsoleSender().sendMessage(Colorize.format("&aUnloading world " + world.getName()));
+                    SlimeUtil.unloadWorld(world.getName());
                 }
             }
         }else{
@@ -138,7 +136,7 @@ public final class Lepvp extends JavaPlugin {
                             Location newArenaLocationTwo = new Location(Bukkit.getWorld(name), arena.getSpawnLocationTwo().getX(), arena.getSpawnLocationTwo().getY(), arena.getSpawnLocationTwo().getZ(), arena.getSpawnLocationTwo().getYaw(), arena.getSpawnLocationTwo().getPitch());
 
                             if (Bukkit.getWorld(arena.getDisplayName().toLowerCase() + result) != null) {
-                                Arena newArena = new Arena(name, name.toUpperCase(), newArenaLocationOne, newArenaLocationTwo, new WaitingArenaState(), new ArrayList<>());
+                                Arena newArena = new Arena(name, name.toUpperCase(), newArenaLocationOne, newArenaLocationTwo, new WaitingArenaState());
                                 toAdd.add(newArena);
                                 Bukkit.getConsoleSender().sendMessage(Colorize.format("&aAdded cloned arena " + name + " with config name " + newArena.getConfigName()));
                             }
@@ -159,7 +157,7 @@ public final class Lepvp extends JavaPlugin {
                         Location newArenaLocationTwo = new Location(Bukkit.getWorld(name), arena.getSpawnLocationTwo().getX(), arena.getSpawnLocationTwo().getY(), arena.getSpawnLocationTwo().getZ(), arena.getSpawnLocationTwo().getYaw(), arena.getSpawnLocationTwo().getPitch());
 
                         if (Bukkit.getWorld(name) != null) {
-                            Arena newArena = new Arena(name, name.toUpperCase(), newArenaLocationOne, newArenaLocationTwo, new WaitingArenaState(), new ArrayList<>());
+                            Arena newArena = new Arena(name, name.toUpperCase(), newArenaLocationOne, newArenaLocationTwo, new WaitingArenaState());
                             toAdd.add(newArena);
                             Bukkit.getConsoleSender().sendMessage(Colorize.format("&aAdded cloned arena " + name + " with config name " + newArena.getConfigName()));
                         }
@@ -188,7 +186,7 @@ public final class Lepvp extends JavaPlugin {
                 Location newArenaSpawnLocationOne = new Location(map.getWorld(), arena1.getSpawnLocationOne().getX(), arena1.getSpawnLocationOne().getY(), arena1.getSpawnLocationOne().getZ(), arena1.getSpawnLocationOne().getYaw(), arena1.getSpawnLocationOne().getPitch());
                 Location newArenaSpawnLocationTwo = new Location(map.getWorld(), arena1.getSpawnLocationTwo().getX(), arena1.getSpawnLocationTwo().getY(), arena1.getSpawnLocationTwo().getZ(), arena1.getSpawnLocationTwo().getYaw(), arena1.getSpawnLocationTwo().getPitch());
 
-                Arena newArena = new Arena(map.getWorld().getName(), map.getWorld().getName().toUpperCase(), newArenaSpawnLocationOne, newArenaSpawnLocationTwo, new WaitingArenaState(), new ArrayList<>());
+                Arena newArena = new Arena(map.getWorld().getName(), map.getWorld().getName().toUpperCase(), newArenaSpawnLocationOne, newArenaSpawnLocationTwo, new WaitingArenaState());
                 toAdd.add(newArena);
                 Bukkit.getLogger().info(Colorize.format("&aEVERYTHING LOADED IN PROPERLY (THE MAPS)"));
             }

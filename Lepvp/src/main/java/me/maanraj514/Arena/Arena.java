@@ -1,5 +1,6 @@
 package me.maanraj514.Arena;
 
+import dev.jcsoftware.jscoreboards.JPerPlayerScoreboard;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -11,13 +12,13 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Data
-@AllArgsConstructor
 public class Arena {
 
     private String displayName;
@@ -27,9 +28,21 @@ public class Arena {
 
     private ArenaState arenaState;
 
+    private JPerPlayerScoreboard scoreboard;
+    private BukkitTask updateTask;
+
     private List<UUID> players;
+
     public Arena() {
         this.players = new ArrayList<>();
+    }
+
+    public Arena(String displayName, String configName, Location spawnLocationOne, Location spawnLocationTwo, ArenaState arenaState) {
+        this.displayName = displayName;
+        this.configName =configName;
+        this.spawnLocationOne = spawnLocationOne;
+        this.spawnLocationTwo = spawnLocationTwo;
+        this.arenaState = arenaState;
     }
 
     private final int MAX_PLAYERS = 2;
@@ -68,6 +81,12 @@ public class Arena {
             if (players.size() == ONE_PLAYER) {
                 setState(new WaitingArenaState(), plugin);
             }
+
+            scoreboard = new JPerPlayerScoreboard(
+                    (player1) -> "&6&lLEPVP",
+                    this::getScoreboardLines
+            );
+            updateTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> scoreboard.updateScoreboard(), 0, 20);
         }
     }
 
@@ -102,6 +121,31 @@ public class Arena {
 
             Colorize.sendMessage(player, message);
         }
+    }
+
+    public List<String> getScoreboardLines(Player player) {
+        List<String> lines = new ArrayList<>();
+        int maxPlayers = 2;
+        lines.add("");
+        if(arenaState instanceof WaitingArenaState){
+            lines.add("Players: &6" + players.size() + "/" + maxPlayers);
+            lines.add("");
+            lines.add("Waiting...");
+        }
+        if(arenaState instanceof StartingArenaState){
+            int secondsLeft = ((StartingArenaState) arenaState).getSecondsLeft();
+            lines.add("Players: &6" + players.size() + "/" + maxPlayers);
+            lines.add("");
+            lines.add("Starting in &6" + secondsLeft);
+        }
+        if(arenaState instanceof ActiveGameState){
+            int playersAlive = ((ActiveGameState) arenaState).getAlivePlayers().size();
+            lines.add("Players: &6" + playersAlive + "/" + players.size());
+            lines.add("");
+            lines.add("You can win, you can do this!!!");
+        }
+        lines.add("");
+        return lines;
     }
 
     public String arenaNameFromArgs(String[] args) {

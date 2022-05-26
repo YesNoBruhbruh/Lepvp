@@ -37,6 +37,11 @@
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="jordanosterberg-repo" />
+      <option name="name" value="jordanosterberg-repo" />
+      <option name="url" value="https://nexus-repo.jordanosterberg.com/repository/maven-releases/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="papermc" />
       <option name="name" value="papermc" />
       <option name="url" value="https://repo.papermc.io/repository/maven-public/" />

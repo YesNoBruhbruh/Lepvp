@@ -10,11 +10,14 @@ public class StartingArenaState extends ArenaState {
     @Getter
     private StartCountdownTask startCountdownTask;
 
+    @Getter
+    private final int secondsLeft = 5;
+
     @Override
     public void onEnable(Lepvp plugin) {
         super.onEnable(plugin);
 
-        this.startCountdownTask = new StartCountdownTask(plugin, getArena(), 5);
+        this.startCountdownTask = new StartCountdownTask(plugin, getArena(), secondsLeft);
         this.startCountdownTask.runTaskTimer(plugin, 0, 20);
     }
 
