@@ -1,5 +1,6 @@
 package me.maanraj514.Arena.State;
 
+import dev.jcsoftware.jscoreboards.JPerPlayerScoreboard;
 import lombok.Getter;
 import me.maanraj514.Arena.ArenaStatus;
 import me.maanraj514.Arena.ItemStacks.*;
@@ -14,8 +15,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.*;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +27,9 @@ public class ActiveGameState extends ArenaState {
     private List<UUID> alivePlayers;
     private boolean isOver = false;
 
+    private JPerPlayerScoreboard scoreboard;
+    private BukkitTask task;
+
     @Override
     public void onEnable(Lepvp plugin) {
         super.onEnable(plugin);
@@ -36,6 +39,11 @@ public class ActiveGameState extends ArenaState {
         alivePlayers = new ArrayList<>(getArena().getPlayers());
 
         int lastSpawnId = 0;
+
+        scoreboard = new JPerPlayerScoreboard(
+                (player) -> "&5&lLEPVP",
+                (player) -> getActiveScoreboardLines()
+        );
 
         for (UUID playerUUID : alivePlayers) {
             Player player = Bukkit.getPlayer(playerUUID);
@@ -49,7 +57,12 @@ public class ActiveGameState extends ArenaState {
                 lastSpawnId = 0;
             }
             addItems(player);
+            addToScoreboard(player);
         }
+
+        task = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+            scoreboard.updateScoreboard();
+        }, 0, 10);
 
         plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
             if (alivePlayers.size() > 1 || isOver) return;
@@ -67,8 +80,17 @@ public class ActiveGameState extends ArenaState {
             } else {
                 getArena().sendMessage("&cNo alive players? Game Over anyway");
             }
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                for (UUID uuid : alivePlayers) {
+                    Player player = Bukkit.getPlayer(uuid);
+                    if (player == null) continue;
 
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> getArena().setState(new ResetArenaState(), plugin), 20 * 7);
+                    removeFromScoreboard(player);
+                    scoreboard.destroy();
+                }
+                task.cancel();
+            }, 20*5);
+            plugin.getServer().getScheduler().runTaskLater(plugin, () -> getArena().setState(new ResetArenaState(), plugin), 20 * 10);
         }, 0, 4);
     }
 
@@ -120,6 +142,33 @@ public class ActiveGameState extends ArenaState {
 
         player.setLevel(0);
         player.setExp(0);
+    }
+
+    private List<String> getActiveScoreboardLines() {
+        List<String> lines = new ArrayList<>();
+
+        lines.add("");
+        int playersLeft = getAlivePlayers().size();
+        lines.add("Players Left: &6" + playersLeft + "/" + getArena().getMAX_PLAYERS());
+        lines.add("");
+        lines.add("among &cඞ");
+        lines.add("");
+
+        return lines;
+    }
+
+    private void removeFromScoreboard(Player player) {
+        if (scoreboard != null) {
+            scoreboard.removePlayer(player);
+            scoreboard.updateScoreboard();
+        }
+    }
+
+    private void addToScoreboard(Player player) {
+        if (scoreboard != null) {
+            scoreboard.addPlayer(player);
+            scoreboard.updateScoreboard();
+        }
     }
 
     private void addItems(Player player) {

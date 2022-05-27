@@ -1,16 +1,13 @@
 package me.maanraj514.Arena;
 
 import dev.jcsoftware.jscoreboards.JPerPlayerScoreboard;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import me.maanraj514.Arena.State.*;
 import me.maanraj514.Lepvp;
 import me.maanraj514.utility.Colorize;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -29,7 +26,6 @@ public class Arena {
     private ArenaState arenaState;
 
     private JPerPlayerScoreboard scoreboard;
-    private BukkitTask updateTask;
 
     private List<UUID> players;
 
@@ -84,16 +80,27 @@ public class Arena {
             }
 
             scoreboard = new JPerPlayerScoreboard(
-                    (player1) -> "&6&lLEPVP",
-                    this::getScoreboardLines
+                    (player1) -> "&5&lLEPVP",
+                    (player1) -> {
+                        if (arenaState instanceof WaitingArenaState){
+                            System.out.println("arenastate is instanceof waiting arena state");
+                            return getWaitingScoreboardLines();
+                        }
+                        removeFromScoreboard(player);
+                        scoreboard.destroy();
+                        return null;
+                    }
             );
-            updateTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> scoreboard.updateScoreboard(), 0, 20);
+            if (arenaState instanceof WaitingArenaState) {
+                addToScoreboard(player);
+            }
         }
     }
 
     public void removePlayer(Player player, Lepvp plugin) {
         this.players.remove(player.getUniqueId());
         sendMessage("&c" + player.getDisplayName() + " has left the match.");
+        removeFromScoreboard(player);
 
         plugin.getArenaManager().getRollBackManager().restore(player, plugin);
 
@@ -109,8 +116,7 @@ public class Arena {
     }
 
     public boolean inList(Player p){
-        this.players.contains(p.getUniqueId());
-        return true;
+        return this.players.contains(p.getUniqueId());
     }
 
     public void sendMessage(String message) {
@@ -124,28 +130,42 @@ public class Arena {
         }
     }
 
-    public List<String> getScoreboardLines(Player player) {
+    public void removeFromScoreboard(Player player) {
+        if (scoreboard != null) {
+            scoreboard.removePlayer(player);
+            scoreboard.updateScoreboard();
+        }
+    }
+
+    public void addToScoreboard(Player player) {
+        if (scoreboard != null) {
+            scoreboard.addPlayer(player);
+            scoreboard.updateScoreboard();
+        }
+    }
+
+    public List<String> getWaitingScoreboardLines() {
         List<String> lines = new ArrayList<>();
-        int maxPlayers = 2;
+
         lines.add("");
-        if(arenaState instanceof WaitingArenaState){
-            lines.add("Players: &6" + players.size() + "/" + maxPlayers);
-            lines.add("");
-            lines.add("Waiting...");
-        }
-        if(arenaState instanceof StartingArenaState){
-            int secondsLeft = ((StartingArenaState) arenaState).getSecondsLeft();
-            lines.add("Players: &6" + players.size() + "/" + maxPlayers);
-            lines.add("");
-            lines.add("Starting in &6" + secondsLeft);
-        }
-        if(arenaState instanceof ActiveGameState){
-            int playersAlive = ((ActiveGameState) arenaState).getAlivePlayers().size();
-            lines.add("Players: &6" + playersAlive + "/" + players.size());
-            lines.add("");
-            lines.add("You can win, you can do this!!!");
-        }
+        lines.add("Players: &6" + players.size() + "/" + getMAX_PLAYERS());
         lines.add("");
+        lines.add("Waiting...");
+        lines.add("");
+
+        return lines;
+    }
+
+    public List<String> getActiveScoreboardLines() {
+        List<String> lines = new ArrayList<>();
+
+        lines.add("");
+        int playersAlive = ((ActiveGameState) arenaState).getAlivePlayers().size();
+        lines.add("Players: &6" + playersAlive + "/" + getMAX_PLAYERS());
+        lines.add("");
+        lines.add("&aYou can do this paul!!");
+        lines.add("");
+
         return lines;
     }
 

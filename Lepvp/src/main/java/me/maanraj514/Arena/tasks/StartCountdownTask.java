@@ -1,6 +1,7 @@
 package me.maanraj514.Arena.tasks;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import me.maanraj514.Arena.Arena;
 import me.maanraj514.Arena.State.ActiveGameState;
 import me.maanraj514.Lepvp;
@@ -17,6 +18,7 @@ public class StartCountdownTask extends BukkitRunnable {
 
     private final Lepvp plugin;
     private Arena arena;
+    @Getter
     private int secondsUntilStart = 5;
 
     @Override
@@ -33,7 +35,6 @@ public class StartCountdownTask extends BukkitRunnable {
             player.sendTitle(Colorize.format("&a" + secondsUntilStart + " &aSeconds left until the game starts!!!"), Colorize.format("&aCRYSTAL PVP"), 0, 20, 0);
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1f, 1f);
         }
-
         secondsUntilStart--;
     }
 }

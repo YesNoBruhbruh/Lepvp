@@ -17,8 +17,10 @@ import me.maanraj514.utility.FileUtil;
 import me.maanraj514.utility.SlimeUtil;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.DisplaySlot;
 
 import java.io.File;
 import java.io.IOException;
