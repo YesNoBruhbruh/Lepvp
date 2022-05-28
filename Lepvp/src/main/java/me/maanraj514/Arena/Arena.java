@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +99,11 @@ public class Arena {
     public void removePlayer(Player player, Lepvp plugin) {
         this.players.remove(player.getUniqueId());
         sendMessage("&c" + player.getDisplayName() + " has left the match.");
-        removeFromScoreboard(player);
+        if (arenaState instanceof WaitingArenaState) {
+            removeFromScoreboard(player);
+        }else{
+            player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+        }
 
         plugin.getArenaManager().getRollBackManager().restore(player, plugin);
 

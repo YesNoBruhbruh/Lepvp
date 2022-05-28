@@ -11,16 +11,11 @@ import me.maanraj514.Arena.State.WaitingArenaState;
 import me.maanraj514.commands.*;
 import me.maanraj514.map.LocalGameMap;
 import me.maanraj514.map.MapInterface;
-import me.maanraj514.utility.Colorize;
-import me.maanraj514.utility.CoolDown;
-import me.maanraj514.utility.FileUtil;
-import me.maanraj514.utility.SlimeUtil;
+import me.maanraj514.utility.*;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.DisplaySlot;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-import java.util.logging.Level;
 
 
 public final class Lepvp extends JavaPlugin {
@@ -64,6 +58,7 @@ public final class Lepvp extends JavaPlugin {
 
         registerCommands();
         registerListeners();
+        registerBstats();
 
         serverFolder = new File(getServer().getWorldContainer().getAbsolutePath());
 
@@ -86,6 +81,7 @@ public final class Lepvp extends JavaPlugin {
     @Override
     public void onDisable() {
         super.onDisable();
+
         if (doesSWMExist()) {
             for (World world : Bukkit.getWorlds()) {
                 if (world.getName().contains("_active_")) {
@@ -103,6 +99,11 @@ public final class Lepvp extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Thanks for using my plugin, -- Maanraj514");
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "-----------------------");
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "-----------------------");
+    }
+
+    private void registerBstats() {
+        int pluginId = 15312;
+        Metrics metrics = new Metrics(this, pluginId);
     }
 
     public void registerCommands(){
