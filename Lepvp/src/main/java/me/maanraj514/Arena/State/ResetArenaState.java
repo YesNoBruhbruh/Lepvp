@@ -53,6 +53,9 @@ public class ResetArenaState extends ArenaState{
 
             if (Bukkit.getWorld(arenaWorldName) != null) {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    SlimeUtil.unloadWorld(arenaWorldName);
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "TRIGGERED UNLOAD METHOD");
+
                     Bukkit.getScheduler().runTaskLater(plugin, () -> {
                         for (Arena arena : plugin.getArenaManager().getSourceArenaList()) {
                             String arenaName = arena.getDisplayName().toLowerCase();
@@ -73,12 +76,10 @@ public class ResetArenaState extends ArenaState{
 
                                     plugin.getArenaManager().deleteDupeArenaItself(arena);
                                     Bukkit.getConsoleSender().sendMessage(Colorize.format("&aREGISTERED THE RESET ARENA"));
-                                }, 20*5);
+                                }, 20);
                             }
                         }
                     }, 20);
-                    SlimeUtil.unloadWorld(arenaWorldName);
-                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "TRIGGERED UNLOAD METHOD");
                 }, 20*2);
             }
         }else{

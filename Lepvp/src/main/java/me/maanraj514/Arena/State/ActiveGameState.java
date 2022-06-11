@@ -26,6 +26,7 @@ public class ActiveGameState extends ArenaState {
     @Getter
     private List<UUID> alivePlayers;
     private boolean isOver = false;
+    private Player loser;
 
     private JPerPlayerScoreboard scoreboard;
     private BukkitTask task;
@@ -57,9 +58,8 @@ public class ActiveGameState extends ArenaState {
                 lastSpawnId = 0;
             }
             addItems(player);
-            addToScoreboard(player);
+            addToScoreboard(player, scoreboard);
         }
-
         task = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             scoreboard.updateScoreboard();
         }, 0, 10);
@@ -72,9 +72,21 @@ public class ActiveGameState extends ArenaState {
             if (alivePlayers.size() == 1) {
                 UUID winnerUUID = alivePlayers.get(0);
                 Player winner = Bukkit.getPlayer(winnerUUID);
+                scoreboard.destroy();
+                task.cancel();
                 if (winner == null || !winner.isOnline()) {
                     getArena().sendMessage("&cGame Over, but winner could not be found");
                 } else {
+                    scoreboard = new JPerPlayerScoreboard(
+                            (player) -> "&5&lLEPVP",
+                            (player) -> getWinnerScoreboardLines(winner, loser)
+                    );
+                    addToScoreboard(winner, scoreboard);
+                    addToScoreboard(loser, scoreboard);
+                    task = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+                        scoreboard.updateScoreboard();
+                    }, 0, 10);
+
                     getArena().sendMessage("&a" + winner.getDisplayName() + " has won!");
                 }
             } else {
@@ -85,11 +97,11 @@ public class ActiveGameState extends ArenaState {
                     Player player = Bukkit.getPlayer(uuid);
                     if (player == null) continue;
 
-                    removeFromScoreboard(player);
+                    removeFromScoreboard(player, scoreboard);
                     scoreboard.destroy();
                 }
                 task.cancel();
-            }, 20*5);
+            }, 20*9);
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> getArena().setState(new ResetArenaState(), plugin), 20 * 10);
         }, 0, 4);
     }
@@ -117,6 +129,7 @@ public class ActiveGameState extends ArenaState {
             alivePlayers.remove(player.getUniqueId());
             player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
             player.setGameMode(GameMode.SPECTATOR);
+            loser = player;
             getArena().sendMessage("&a" + player.getDisplayName() + " died!");
             player.spigot().respawn();
         }
@@ -128,6 +141,7 @@ public class ActiveGameState extends ArenaState {
         if (!getArena().isPlayer(event.getPlayer())) return;
 
         alivePlayers.remove(event.getPlayer().getUniqueId());
+        loser = event.getPlayer();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -144,6 +158,18 @@ public class ActiveGameState extends ArenaState {
         player.setExp(0);
     }
 
+    private List<String> getWinnerScoreboardLines(Player winner, Player loser) {
+        List<String> lines = new ArrayList<>();
+
+        lines.add("");
+        lines.add("&aThe winner is &a" + winner.getDisplayName());
+        lines.add("");
+        lines.add("&cThe loser is &c" + loser.getDisplayName());
+        lines.add("");
+
+        return lines;
+    }
+
     private List<String> getActiveScoreboardLines() {
         List<String> lines = new ArrayList<>();
 
@@ -157,14 +183,14 @@ public class ActiveGameState extends ArenaState {
         return lines;
     }
 
-    private void removeFromScoreboard(Player player) {
+    private void removeFromScoreboard(Player player, JPerPlayerScoreboard scoreboard) {
         if (scoreboard != null) {
             scoreboard.removePlayer(player);
             scoreboard.updateScoreboard();
         }
     }
 
-    private void addToScoreboard(Player player) {
+    private void addToScoreboard(Player player, JPerPlayerScoreboard scoreboard) {
         if (scoreboard != null) {
             scoreboard.addPlayer(player);
             scoreboard.updateScoreboard();

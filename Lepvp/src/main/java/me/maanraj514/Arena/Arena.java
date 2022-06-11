@@ -82,7 +82,6 @@ public class Arena {
                     (player1) -> "&5&lLEPVP",
                     (player1) -> {
                         if (arenaState instanceof WaitingArenaState){
-                            System.out.println("arenastate is instanceof waiting arena state");
                             return getWaitingScoreboardLines();
                         }
                         removeFromScoreboard(player);
