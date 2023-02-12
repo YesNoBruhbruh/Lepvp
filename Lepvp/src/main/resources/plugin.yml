@@ -22,8 +22,6 @@ commands:
     usage: /<command>
     aliases:
       - q
-  reset:
-    usage: /<command>
   randomJoin:
     usage: /<command>
     aliases:

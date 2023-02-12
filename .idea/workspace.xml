@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="53f337fd-b7b7-469f-ab8b-8b89b375c576" name="Changes" comment="fixed scoreboard when you do /duels q">
+    <list default="true" id="53f337fd-b7b7-469f-ab8b-8b89b375c576" name="Changes" comment="fixed a bug when a player leaves">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/Arena.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/Arena.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ActiveGameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ActiveGameState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ResetArenaState.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/State/ResetArenaState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ArenaSetupManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Arena/ArenaSetupManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Lepvp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/Lepvp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/java/me/maanraj514/commands/ResetWorld.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lepvp/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Lepvp/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,18 +43,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="MTConfigurable" />
-  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/everything coding related/Lepvp&quot;
+  }
+}</component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="mvn clean package" />
@@ -71,6 +68,13 @@
       <workItem from="1645255575178" duration="511000" />
       <workItem from="1645324311125" duration="3977000" />
       <workItem from="1645337577044" duration="14000" />
+      <workItem from="1655210237969" duration="2000" />
+      <workItem from="1658724767503" duration="40000" />
+      <workItem from="1660218286577" duration="204000" />
+      <workItem from="1660700544698" duration="1000" />
+      <workItem from="1673947809930" duration="14000" />
+      <workItem from="1675579595014" duration="7000" />
+      <workItem from="1676209416013" duration="33000" />
     </task>
     <task id="LOCAL-00001" summary="Made major performance changes to arena manager and removed as much optionals as I can See and made some stuff to make code look cleaner">
       <created>1652103549596</created>
@@ -289,7 +293,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653725277632</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="fixed a bug when a player leaves">
+      <created>1654950830346</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1654950830346</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -328,6 +339,7 @@
     <MESSAGE value="accidentally removed arraylist from arena constructor :skull:" />
     <MESSAGE value="implemented scoreboard system!" />
     <MESSAGE value="fixed scoreboard when you do /duels q" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed scoreboard when you do /duels q" />
+    <MESSAGE value="fixed a bug when a player leaves" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed a bug when a player leaves" />
   </component>
 </project>

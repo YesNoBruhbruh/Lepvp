@@ -107,7 +107,6 @@ public final class Lepvp extends JavaPlugin {
     }
 
     public void registerCommands(){
-        getCommand("reset").setExecutor(new ResetWorld(map));
         getCommand("setLobby").setExecutor(new SetLobbyCommand(this));
         getCommand("arena").setExecutor(new ArenaCommand(this, arena));
         getCommand("duels").setExecutor(new DuelCommand(this, arena));
